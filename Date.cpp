@@ -149,13 +149,13 @@ Date Date::operator+(int add) const {
 
 
             if (eDay > 30) {
-                eMon = eMon + eMon/30;
-                eDay = eMon % 30;
+                eMon = eMon + eDay/30;
+                eDay = eDay % 30;
             }
 
             if (eMon > 12) {
-                eYea = eYea + eYea/12;
-                eMon = eYea % 12;
+                eYea = eYea + eMon/12;
+                eMon = eMon % 12;
             }
 
     Date sum (eYea, eMon, eDay);
@@ -274,16 +274,16 @@ DateFlight DateFlight::operator+ (unsigned int add) const{
         eMin = eMin % 60;
 
         if (eHour >= 24) {
-            eDay = eDay + eDay/24;
+            eDay = eDay + eHour/24;
             eHour = eHour % 24;
 
             if (eDay >= 30) {
-                eMon = eMon + eMon/30;
+                eMon = eMon + eDay/30;
                 eDay = eMon % 30;
             }
 
             if (eMon >= 12) {
-                eYea = eYea + eYea/12;
+                eYea = eYea + eMon/12;
                 eMon = eYea % 12;
             }
         }

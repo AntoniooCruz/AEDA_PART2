@@ -5,14 +5,17 @@
 
 Company::Company() {}
 
-Company::Company(string passengersFile, string planesFile, string reservFile) {
+Company::Company(string passengersFile, string planesFile, string reservFile, string techFile) {
     this->planesFile = planesFile;
     this->passFile = passengersFile;
     this->reservFile = reservFile;
+    this->techFile = techFile;
+
     try {
         openPassFile();
         openPlanesFile ();
         openReservFile();
+        openTechFile();
     } catch (ErrorOpeningFile &name) {
         cout << "Error opening the file " << name.getFileName() << endl
              << "No data was imported\n";
@@ -88,6 +91,7 @@ void Company::openPlanesFile (){
     string textLine;
     infich.open(planesFile);
 
+
     if (!infich.fail()) {
         while (getline(infich, textLine)) {
            planes.push_back(new Plane (textLine));
@@ -131,11 +135,58 @@ void Company::openReservFile() {
     }
 }
 
+void Company::openTechFile() {
+    ifstream infich;
+    string textLine, name, model;
+    char aux;
+    unsigned int id;
+    int i = 0;
+    vector <string> models;
+    vector <Plane *> planes;
+
+    infich.open(techFile);
+
+
+    if (!infich.fail()) {
+        while (getline(infich, textLine)) {
+            istringstream techStream (textLine);
+            techStream >> id >> aux;
+
+            name = Company::readComplexString(techStream, ';');
+
+            aux = ',';
+
+            while ((! techStream.eof()) && aux != ';'){
+                techStream >> model >> aux;
+                models.push_back(model);
+            }
+
+            while (! techStream.eof()){
+                techStream >> id >> aux;
+
+                planes.push_back(searchPlane(id, i));
+            }
+
+            Technician t (id, name, models, planes);
+
+            technicians.push(t);
+
+            // erases all the content from the vectors
+            models.clear();
+            planes.clear();
+        }
+    }
+    else {
+        throw ErrorOpeningFile (techFile);
+    }
+}
+
 void Company::logOut() {
     try {
         closePassFile();
         closePlanesFile ();
 		closeReservFile();
+        closeTechFile();
     } catch (ErrorOpeningFile &name) {
         cout << "Error opening the file " << name.getFileName() << endl
              << "No data was saved\n";
@@ -267,6 +318,48 @@ void Company::closeReservFile() {
 		saveData << noCard[i].getFlight()->getId() << " ; " << noCard[i].getPassenger()->getName() << " ; " << noCard[i].getPassenger()->getYear() << " / " << noCard[i].getPassenger()->getMonth() << " / " << noCard[i].getPassenger()->getDay() << " ; " << noCard[i].getPrice() << " ; " << noCard[i].getSeat() << endl;
 	}
 	saveData.close();
+}
+
+void Company::closeTechFile() {
+    ofstream saveData;
+
+    saveData.open(techFile, ios::out | ios::trunc);
+
+    if (saveData.fail()){
+        throw ErrorOpeningFile (passFile);
+    }
+
+
+    while (! technicians.empty()) {
+        Technician t = technicians.top();
+
+        saveData << t.getId() << " ; " << t.getName() << " ; ";
+
+        if ( t.getModel().size() != 0) {
+            saveData << t.getModel().at(0);
+        }
+
+        for (int i = 1; i < t.getModel().size(); i++) {
+            saveData << " , " << t.getModel().at(i);
+        }
+
+
+
+        if ( t.getPlanesToDo().size() != 0){
+            saveData << " ; ";
+            saveData << t.getPlanesToDo().at(0);
+        }
+
+        for (int i = 1; i < t.getPlanesToDo().size(); i++) {
+            saveData << " , " << t.getPlanesToDo().at(i);
+        }
+
+        saveData << endl;
+
+        technicians.pop();
+
+
+    }
 }
 
 string Company::readComplexString (istringstream &ss, char separate) {
@@ -420,6 +513,36 @@ unsigned long Company::numOfFlights() {
 	return numOfFlights;
 }
 
+void Company::scheduleMaintenances() {
+    priority_queue <Technician> temporary;
+    Technician t;
+
+    for (int i = 0; i < planes.size(); i++) {
+        temporary = technicians;
+
+        string plane_model = planes.at(i)->getModel();
+
+
+        while (! technicians.empty()){
+            if (technicians.top().hasModel(plane_model)) {
+                t = technicians.top();
+                t.addPlanesToDo(planes.at(i));
+                technicians.pop();
+                temporary.push(t);
+                break;
+            }
+            temporary.push(technicians.top());
+            technicians.pop();
+        }
+
+        while (! temporary.empty()) {
+            technicians.push(temporary.top());
+            temporary.pop();
+        }
+    }
+}
+
+
 /*  EDIT PASSENGER */
 
 void Company::addPassenger(PassengerWCard *p) {
@@ -500,8 +623,7 @@ PassengerWCard * Company::searchPassenger(unsigned int nrid, int &i) {
 
 }
 
-void Company::maintenanceList()
-{
+void Company::maintenanceList() {
 	unsigned int i = 1;
 	for (set<Plane*>::iterator it = maintenance.begin(); it != maintenance.end(); it++)
 	{	
@@ -510,8 +632,7 @@ void Company::maintenanceList()
 	}
 }
 
-void Company::insertPlanesInTree()
-{
+void Company::insertPlanesInTree() {
 	for (unsigned int i = 0; i < planes.size(); i++)
 	{
 		maintenance.insert(planes[i]);
@@ -519,6 +640,7 @@ void Company::insertPlanesInTree()
 }
 
 /*  EDIT FLIGHTS */
+
 Flight * Company::searchFlight (unsigned int nrid) {
     Flight * searching;
     int i = 0;
@@ -539,24 +661,25 @@ Flight * Company::searchFlight (unsigned int nrid) {
 
 
 /* EDIT TECHNICIANS */
-void Company::addTechnician(Technician &t) {
+
+void Company::addTechnician(Technician t) {
     technicians.push(t);
 }
 
 Technician Company::deleteTechnician(int id) {
-    queue <Technician> temporary;
+    priority_queue <Technician> temporary;
     bool found = false;
 
-    Technician t = technicians.front();
+    Technician t = technicians.top();
 
     while (! technicians.empty()) {
 
-        if (technicians.front().getId() == id) {
-            t = technicians.front();
+        if (technicians.top().getId() == id) {
+            t = technicians.top();
             technicians.pop();
             found = true;
         } else {
-            temporary.push(technicians.front());
+            temporary.push(technicians.top());
             technicians.pop();
         }
     }
@@ -564,17 +687,18 @@ Technician Company::deleteTechnician(int id) {
     technicians = temporary;
 
     if (found)
-    return t;
+        return t;
     else
         throw NoSuchTechnician (id);
 }
 
 Technician Company::searchTechnician(int id) {
-    queue <Technician> temporary = technicians;
+    priority_queue <Technician> temporary = technicians;
 
     while (! temporary.empty()) {
-        if (temporary.front().getId() == id)
-            return temporary.front();
+
+        if (temporary.top().getId() == id)
+            return temporary.top();
 
         temporary.pop();
     }
@@ -583,10 +707,10 @@ Technician Company::searchTechnician(int id) {
 }
 
 void Company::printAllTechnicians() {
-    queue <Technician> temporary = technicians;
+    priority_queue <Technician> temporary = technicians;
 
     while (! temporary.empty()) {
-        cout << temporary.front() << endl << endl;
+        cout << temporary.top() << endl << endl;
         temporary.pop();
     }
 }

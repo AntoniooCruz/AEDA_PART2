@@ -25,10 +25,11 @@ struct SortOrder
 	}
 };
 
+class Technician;
 class PassengerWCard;
 
 /*
- * @class Company Class that represents a airline company where are stored all its planes and registered passengers
+ * @class Company Class that represents a airline company where are stored all its planes, registered passengers, maintenances and technicians
  */
 
 class Company
@@ -36,40 +37,48 @@ class Company
 private:
     vector<PassengerWCard *> PassengerCards;			/** < @brief All of passengers registered in the company */
     vector<Plane *> planes;							    /** < @brief All of the planes of the airline company */
-    queue <Technician> technicians;                     /** < @brief All of the technicians of the company ordered according to their availability*/
-	string planesFile, passFile, reservFile;			/** < @brief Names of the files where the information is imported from */
+    priority_queue <Technician> technicians;            /** < @brief All of the technicians of the company ordered according to their availability*/
+    string planesFile, passFile, reservFile, techFile;	/** < @brief Names of the files where the information is imported from */
 	set<Plane*, SortOrder> maintenance;
+
 public:
-	/*
+
+    /**
 	 * @brief Constructor called when there's an error opening the files. No data is imported.
 	 */
     Company();
 
-    /*
-     * @brief Constructor that calls the functions to open the files
+    /**
+     * @brief Constructor Data will be imported from the files
+     * @param passengersFile File with the passengers' information
+     * @param planesFile File with the planes' information
+     * @param reservFile File with the reservations' information
+     * @param techFile File with the techs' information
+     * @throw ErrorOpeningFile If there isn't a file with the name specified in the parameters
+     * @throw InvalidDate If there's an invalid date in one of the files
      */
-    Company(string passengersFile, string planesFile, string reservFile);
+    Company(string passengersFile, string planesFile, string reservFile, string techFile);
 
     /* Get methods */
-    /*
+    /**
      * @returns The planes of the airline company
      */
     vector<Plane *> getPlanes() const;
 
-    /*
+    /**
      * @returns The passengers registered on the company
      */
     vector<PassengerWCard *> getRegPassengers () const;
 
     /* Open files */
-    /*
+    /**
      * @brief Opens the file with the information regarding the passengers.
      * Uses the member value passFile as the name of the file.
      * @throw ErrorOpeningFile If there's an error opening the file
      */
     void openPassFile ();
 
-    /*
+    /**
      * @brief Opens the file with the information regarding the planes
      * Uses the member value planesFile as the name of the file
      * @throw ErrorOpeningFile If there's an error opening the file
@@ -81,6 +90,9 @@ public:
      * Uses the member value reservFile as the name of the file
      */
     void openReservFile ();
+
+
+    void openTechFile();
 
     /**
      * @brief Calls the three functions that update the data on each file
@@ -104,6 +116,8 @@ public:
 	 * Uses the member value reservFile as the name of the file.
 	 */
     void closeReservFile();
+
+    void closeTechFile();
 
     /**
     	 * @brief Reads a complex string meaning a string with several nouns separated by spaces. Used when reading strings from the files.
@@ -163,9 +177,11 @@ public:
 	 */
 	unsigned long numOfFlights();
 
+    void scheduleMaintenances ();
+
 
 	/*Edit Passenger vector */
-	/*
+	/**
 	 * @brief Adds a registered passenger to the company
 	 * @param p1 The passenger to be added to the company
 	 */
@@ -200,7 +216,7 @@ public:
      * @brief Adds a technician to the company inserting him in the queue according to his priority
      * @param t Technician to be added to the company
      */
-    void addTechnician (Technician &t);
+    void addTechnician (Technician t);
 
     /**
      * @brief Deletes a technician from the company's database

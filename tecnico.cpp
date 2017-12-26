@@ -6,10 +6,14 @@
 
 unsigned int Technician::lastId = 0;
 
-unsigned int Technician::newId()
-{
+unsigned int Technician::newId() {
 	lastId++;
 	return lastId;
+}
+
+Technician::Technician() {
+    this->name = "";
+    this->id = 0;
 }
 
 Technician::Technician(string name, vector<string> specialty) {
@@ -18,8 +22,17 @@ Technician::Technician(string name, vector<string> specialty) {
 	this->model= specialty;
 }
 
-unsigned int Technician::getId() const
-{
+Technician::Technician(unsigned int id, string name, vector<string> specialty, vector<Plane *> planes) {
+    this->id = id;
+    this->name = name;
+    this->model = specialty;
+    this->planesToDo = planes;
+
+    if (id > lastId)
+        lastId = id;
+}
+
+unsigned int Technician::getId() const {
 	return id;
 }
 
@@ -27,19 +40,25 @@ string Technician::getName() const {
     return name;
 }
 
-vector<string> Technician::getModel() const
-{
+vector<string> Technician::getModel() const {
 	return model;
 }
 
-vector<Plane *> Technician::getPlanesToDo() const
-{
+vector<Plane *> Technician::getPlanesToDo() const {
 	return this->planesToDo;
 }
 
-void Technician::addPlanesToDo(unsigned int id)
-{
-	//TODO: n
+bool Technician::hasModel(string plane_model) const {
+    vector<string>::const_iterator it = find (model.begin(), model.end(), plane_model);
+
+    if (it == model.end())
+        return false;
+
+    return true;
+}
+
+void Technician::addPlanesToDo(Plane* p) {
+	planesToDo.push_back(p);
 }
 
 bool Technician::operator< (const Technician &t2) const {

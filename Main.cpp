@@ -1505,8 +1505,8 @@ void printTechnician (Company &companyName) {
 
 }
 
-/*         OPERATOR OVERLOADING       */
 
+/*         OPERATOR OVERLOADING       */
 
 ostream& operator<< (ostream &os, const PassengerWCard &p) {
 	os << "Id: " << p.id << endl
@@ -1520,11 +1520,9 @@ ostream& operator<< (ostream &os, const PassengerWCard &p) {
 }
 
 
-
-
 int main()
 {
-	Company ryanair("/Users/carqueja/Repositories/AEDA_PART2/passengers.txt", "/Users/carqueja/Repositories/AEDA_PART2/planes.txt","/Users/carqueja/Repositories/AEDA_PART2/reserv.txt");
+	Company ryanair("passengers.txt", "planes.txt","reserv.txt", "techs.txt");
 	mainMenu(ryanair);
 	return 0;
 }
