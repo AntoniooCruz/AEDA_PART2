@@ -347,11 +347,11 @@ void Company::closeTechFile() {
 
         if ( t.getPlanesToDo().size() != 0){
             saveData << " ; ";
-            saveData << t.getPlanesToDo().at(0);
+            saveData << t.getPlanesToDo().at(0)->getId();
         }
 
         for (int i = 1; i < t.getPlanesToDo().size(); i++) {
-            saveData << " , " << t.getPlanesToDo().at(i);
+            saveData << " , " << t.getPlanesToDo().at(i)->getId();
         }
 
         saveData << endl;
@@ -417,6 +417,8 @@ void Company::addPlane(Plane *p) {
             planes.insert(it, p);
         }
     }
+
+    scheduleMaintenance(p);
 }
 
 Plane * Company::deletePlane(unsigned int nrid) {
@@ -513,20 +515,15 @@ unsigned long Company::numOfFlights() {
 	return numOfFlights;
 }
 
-void Company::scheduleMaintenances() {
+void Company::scheduleMaintenance (Plane* p) {
     priority_queue <Technician> temporary;
     Technician t;
 
-    for (int i = 0; i < planes.size(); i++) {
-        temporary = technicians;
-
-        string plane_model = planes.at(i)->getModel();
-
 
         while (! technicians.empty()){
-            if (technicians.top().hasModel(plane_model)) {
+            if (technicians.top().hasModel(p->getModel())) {
                 t = technicians.top();
-                t.addPlanesToDo(planes.at(i));
+                t.addPlanesToDo(p);
                 technicians.pop();
                 temporary.push(t);
                 break;
@@ -539,7 +536,6 @@ void Company::scheduleMaintenances() {
             technicians.push(temporary.top());
             temporary.pop();
         }
-    }
 }
 
 

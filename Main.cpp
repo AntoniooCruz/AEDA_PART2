@@ -2,8 +2,7 @@
 
 using namespace std;
 
-string checkString(string s1)
-{
+string checkString(string s1) {
 	cin.ignore(1000, '\n');
 	getline(cin, s1);
 
@@ -1498,11 +1497,6 @@ void printTechnician (Company &companyName) {
 				 << "Try again: ";
 		}
 	}
-
-
-
-
-
 }
 
 
@@ -1522,7 +1516,7 @@ ostream& operator<< (ostream &os, const PassengerWCard &p) {
 
 int main()
 {
-	Company ryanair("passengers.txt", "planes.txt","reserv.txt", "techs.txt");
+	Company ryanair("/Users/carqueja/Repositories/AEDA_PART2/passengers.txt", "/Users/carqueja/Repositories/AEDA_PART2/planes.txt","/Users/carqueja/Repositories/AEDA_PART2/reserv.txt", "/Users/carqueja/Repositories/AEDA_PART2/techs.txt");
 	mainMenu(ryanair);
 	return 0;
 }

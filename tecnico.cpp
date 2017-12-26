@@ -62,7 +62,7 @@ void Technician::addPlanesToDo(Plane* p) {
 }
 
 bool Technician::operator< (const Technician &t2) const {
-    return getPlanesToDo() < t2.getPlanesToDo();
+    return getPlanesToDo() > t2.getPlanesToDo();
 }
 
 ostream& operator<< (ostream &os, const Technician &t) {

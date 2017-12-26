@@ -177,7 +177,10 @@ public:
 	 */
 	unsigned long numOfFlights();
 
-    void scheduleMaintenances ();
+    /**
+     * @brief
+     */
+    void scheduleMaintenance (Plane* p);
 
 
 	/*Edit Passenger vector */

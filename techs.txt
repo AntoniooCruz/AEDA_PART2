@@ -1,3 +1,4 @@
-1 ; Ambrosio Pereira ; A321 , BUS , B540
-2 ; Anabela Borges ; A321 , B600 , BUS , A230
-3 ; Rogerio Santos ; A321 , B400
+6 ; Ambrosio Pereira ; A321 , BUS , B540 ; 1 , 6
+5 ; Tiago Sousa ; A320 ; 2 , 5
+3 ; Anabela Borges ; A321 , B600 , BUS , A230 ; 3
+4 ; Rogerio Santos ; A321 , B400 ; 4
