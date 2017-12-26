@@ -8,8 +8,18 @@
 #include "Passenger.h"
 #include "Plane.h"
 #include "Exceptions.cpp"
-
+#include <set>
 using namespace std;
+struct SortOrder
+{
+	bool operator()(const Plane* p1, const Plane* p2)
+	{
+		if (p1->getNextMaintenace() == p2->getNextMaintenace())
+			return p1->getId() < p2->getId();
+		else
+			return p1->getNextMaintenace() < p2->getNextMaintenace();
+	}
+};
 
 class PassengerWCard;
 
@@ -23,6 +33,7 @@ private:
     vector<PassengerWCard *> PassengerCards;			/** < @brief All of passengers registered in the company */
     vector<Plane *> planes;							/** < @brief All of the planes of the airline company */
 	string planesFile, passFile, reservFile;			/** < @brief Names of the files where the information is imported from */
+	set<Plane*, SortOrder> maintenance;
 public:
 	/*
 	 * @brief Constructor called when there's an error opening the files. No data is imported.
@@ -102,6 +113,13 @@ public:
      * @brief Adds a plane to the company. Calculates the id it should have and sets the plane id.
      * @param p The plane to be added
      */
+	void insertPlanesInTree();
+
+	void maintenanceList();
+
+	void maintenanceList(Date &d1);
+
+
     void addPlane(Plane *p);
 
     /**

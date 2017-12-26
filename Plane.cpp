@@ -16,14 +16,26 @@ Plane::Plane(unsigned int nrPlaces) {
 	nameSeats();
 }
 
+Plane::Plane(unsigned int nrPlaces, string model, int maintenanceRate, int nextMaintenance) {
+	this->nrPlaces = nrPlaces;
+	this->model = model;
+	this->maintenanceRate = maintenanceRate;
+	this->nextMaintenance = nextMaintenance;
+	this->id = 0;
+	nameSeats();
+}
+
 Plane::Plane (string textLine){
     istringstream planeStream (textLine);
-    string arrAirp, depAirp;
+    string arrAirp, depAirp, model;
     char aux, type;
-	unsigned int places, year, month, day, hour, minutes, duration, id;
+	unsigned int places, year, month, day, hour, minutes, duration, id,rate,nextInsp;
 	float price;
 
-    planeStream >> id >> aux >> places >> aux;
+    planeStream >> id >> aux >> places >> aux >> model >> aux >> rate >> aux >> nextInsp >> aux;
+	this->model = model;
+	this->maintenanceRate = rate;
+	this->nextMaintenance = nextInsp;
 
 	this->nrPlaces = places;
 	this->id = id;
@@ -37,8 +49,8 @@ Plane::Plane (string textLine){
 
     	arrAirp = Company::readComplexString(planeStream, ',');
 
-    	planeStream >> year >> aux >> month >> aux >> day >> aux >> hour >> aux >> minutes >> aux >> duration >> aux >> price >> aux >> type >> aux;
-
+		planeStream >> year >> aux >> month >> aux >> day >> aux >> hour >> aux >> minutes >> aux >> duration >> aux >> price >> aux >> type >> aux;
+		
     	DateFlight departure (year, month, day, hour, minutes);
 
     	if (type == 'C') {
@@ -50,7 +62,9 @@ Plane::Plane (string textLine){
     	else {
     		throw ErrorOpeningFile ("planes.txt");
     	}
+
 		
+
     }
 
 }
@@ -182,6 +196,21 @@ unsigned long Plane::getNrFlights () const {
 
 vector<string> Plane::getSeatsNames() const {
 	return seatsN;
+}
+
+string Plane::getModel() const
+{
+	return model;
+}
+
+int Plane::getMaintenaceRate() const
+{
+	return maintenanceRate;
+}
+
+int Plane::getNextMaintenace() const
+{
+	return nextMaintenance;
 }
 
 void Plane::setId(unsigned int id) {
@@ -327,6 +356,8 @@ bool Plane::operator<(const Plane &p) {
 
 ostream& operator<< (ostream &os, const Plane &p) {
 	os << "Id: " << p.id << endl
+	   << "Model: " << p.model <<endl
+	   << "Days until next inspection: " << p.nextMaintenance << endl
 	   << "Nr of places: " << p.nrPlaces << endl
 	   << "Flights";
 
@@ -337,3 +368,4 @@ ostream& operator<< (ostream &os, const Plane &p) {
 
 	return os;
 }
+

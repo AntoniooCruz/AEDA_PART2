@@ -9,7 +9,6 @@ Company::Company(string passengersFile, string planesFile, string reservFile) {
     this->planesFile = planesFile;
     this->passFile = passengersFile;
     this->reservFile = reservFile;
-
     try {
         openPassFile();
         openPlanesFile ();
@@ -22,6 +21,7 @@ Company::Company(string passengersFile, string planesFile, string reservFile) {
         cout << "Error opening the file because of an invalid date - " << d.getDate() << endl
              << "No data was imported\n";
     }
+	insertPlanesInTree();
 }
 
 /*   GET METHODS */
@@ -184,6 +184,7 @@ void Company::closePlanesFile() {
 
     for (int i = 0; i < planes.size(); i++) {
         saveData << planes[i]->getId() << " ; " << planes[i]->getNrPlaces();
+		saveData << " , " << planes[i]->getModel() << " , " << planes[i]->getMaintenaceRate() << " , " << planes[i]->getNextMaintenace();
 
         temp = planes[i]->getFlights();
 
@@ -198,7 +199,6 @@ void Company::closePlanesFile() {
                 saveData << "C";
 
         }
-
         saveData << endl;
     }
 
@@ -294,7 +294,7 @@ void Company::addPlane(Plane *p) {
 	long i;
     int id;
 	vector <Plane *>::iterator it;
-
+	maintenance.insert(p);
     //if the planes' vector is empty
 	if (planes.size() == 0){
 			p->setId(1);
@@ -498,6 +498,22 @@ PassengerWCard * Company::searchPassenger(unsigned int nrid, int &i) {
 
 	throw NoSuchPassenger(nrid);
 
+}
+void Company::maintenanceList()
+{
+	unsigned int i = 1;
+	for (set<Plane*>::iterator it = maintenance.begin(); it != maintenance.end(); it++)
+	{	
+		cout << i << ":" << endl;
+		cout << *(*it) <<endl;
+	}
+}
+void Company::insertPlanesInTree()
+{
+	for (unsigned int i = 0; i < planes.size(); i++)
+	{
+		maintenance.insert(planes[i]);
+	}
 }
 
 /*  EDIT FLIGHTS */

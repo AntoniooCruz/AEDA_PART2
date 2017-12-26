@@ -63,6 +63,7 @@ void passengersMenu(Company &companyName);
 */
 void reservationsMenu(Company &companyName);
 
+void maintenanceMenu(Company &companyName);
 
 /* MANAGE PLANES */
 /**

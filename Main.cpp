@@ -71,7 +71,7 @@ void waitToContinue () {
 void mainMenu(Company &companyName) {
 	int choice = 0;
 
-	while (choice != 5) {
+	while (choice != 6) {
 		cout << "____________________________________________________" << endl;
 		cout << "|                  MAIN MENU                       |" << endl;
 		cout << "|                                                  |" << endl;
@@ -80,10 +80,11 @@ void mainMenu(Company &companyName) {
 		cout << "|     2) Manage Flights                            |" << endl;
 		cout << "|     3) Manage Passengers                         |" << endl;
 		cout << "|     4) Manage Reservations                       |" << endl;
-		cout << "|     5) Exit                                      |" << endl;
+		cout << "|     5) Manage Maintenance                        |" << endl;
+		cout << "|     6) Exit                                      |" << endl;
 		cout << "|    Option: ";
 
-		choice = checkBoundaries(1, 5);
+		choice = checkBoundaries(1, 6);
 
 
 		switch (choice) {
@@ -104,6 +105,10 @@ void mainMenu(Company &companyName) {
 			break;
 
 		case 5:
+			maintenanceMenu(companyName);
+			break;
+
+		case 6:
 			cout << endl;
 			companyName.logOut();
 			cout << "See you next time!\n";
@@ -336,6 +341,35 @@ void reservationsMenu(Company &companyName) {
 
 	}
 }
+void maintenanceMenu(Company &companyName) {
+	int choice = 0;
+
+	while (choice != 2) {
+		try {
+			cout << "____________________________________________________" << endl;
+			cout << "|                   MANAGE MAINTENANCE             |" << endl;
+			cout << "|                                                  |" << endl;
+			cout << "|        Type your option:                         |" << endl;
+			cout << "|     1) List Maintenances to do                   |" << endl;
+			cout << "|     2) Go Back to Main Menu                      |" << endl;
+			cout << "|    Option: ";
+			choice = checkBoundaries(1, 2);
+
+			switch (choice) {
+			case 1:
+				cout << endl;
+				companyName.maintenanceList();
+				break;
+
+		
+			}
+
+		}
+		catch (OperationCanceled &e) {
+			cout << "Operation was canceled\n";
+		}
+	}
+}
 
 /*             MANAGE PLANES        */
 
@@ -343,7 +377,9 @@ void reservationsMenu(Company &companyName) {
 
 void addPlane(Company &companyName) {
 	int places;
-
+	string model;
+	int maintenanceRate;
+	int nextMaintenance;
 	cout << "\nType 0 to cancel the operation\n";
 	cout << "Nr of places (multiple of 6): ";
 	places = checkBoundaries(0);
@@ -356,7 +392,21 @@ void addPlane(Company &companyName) {
             cout << "Number of places was round up to nearest multiple: " << places << endl;
         }
 
-		Plane * adding = new Plane(places);
+		cout << "Name of the model of the Plane \n";
+		model = checkString(model);
+
+		if (model == "0")
+			throw OperationCanceled();
+
+		cout << "Rate at which the plane must be inspected(in days): ";
+		maintenanceRate = checkBoundaries(0);
+
+		if (maintenanceRate == 0)
+			throw OperationCanceled();
+		nextMaintenance = maintenanceRate;
+
+
+		Plane * adding = new Plane(places,model,maintenanceRate,nextMaintenance);
 		companyName.addPlane(adding);
 
         cout << "\nThe plane was added successfully!\n\n";

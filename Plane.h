@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include "Date.h"
 
 using namespace std;
 
@@ -22,6 +23,9 @@ private:
     unsigned int nrPlaces;				/** < @brief Number of places of the plane */
     vector <Flight * > flights;			/** < @brief A vector of pointers to all of the flights of this plane */
 	vector<string> seatsN;				/** < @brief A vector of strings which are the name of seats of the plane */
+	string model;						/** < @brief The name of the model of the plane */
+	int maintenanceRate;				/** < @brief The rate at which the plane must be inspected (in days) */
+	int nextMaintenance;				/** < @brief How many days until the next maintenance */
 
 public:
 	/**
@@ -35,6 +39,8 @@ public:
 	 * @param nrPlaces The number of places of the plane
 	 */
     Plane (unsigned int nrPlaces);
+
+	Plane(unsigned int nrPlaces, string model, int maintenanceRate, int nextMaintenance);
 
 	/**
 	 * @brief This constructor is used when reading form the files
@@ -69,6 +75,21 @@ public:
 	 * @return The name of the seats of the plane
 	 */
 	vector<string> getSeatsNames() const;
+
+	/**
+	* @return The model of the plane
+	*/
+	string getModel() const;
+
+	/**
+	* @return The rate at which the plane must be inspected *
+	*/
+	int getMaintenaceRate() const;
+
+	/**
+	* @return How many days until the next inspection *
+	*/
+	int getNextMaintenace() const;
 
 	/* set methods */
 
@@ -138,6 +159,9 @@ public:
 	 */
 	vector <Flight *> clearPastFlights ();
 
+	void rescheduleMaintenance(Date &d1);
+
+	int doMaintenance();
 
     /* operator overloading */
 	/**
@@ -160,7 +184,7 @@ public:
 	 * @param p The plane to be printed
 	 * @return os
 	 */
-    friend ostream& operator<< (ostream &os, const Plane &p);
+	friend ostream& operator<< (ostream &os, const Plane &p);
 
 
 };
