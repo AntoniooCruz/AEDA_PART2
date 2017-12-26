@@ -81,9 +81,9 @@ void Company::openPassFile () {
 
             PassengerCards.push_back(ptrP);
 
-			Date D (LTByear, LTBmonth, LTBday);
+			Date Date (LTByear, LTBmonth, LTBday);
 
-			ptrP->setLastTicketBought(D);
+			ptrP->setLastTicketBought(Date);
 		
         }
     } else {
