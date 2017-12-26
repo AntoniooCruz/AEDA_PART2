@@ -41,6 +41,7 @@ void Company::openPassFile () {
     unsigned int year, month, day, id, flight, year2 = 0;
 	unsigned int LTByear, LTBmonth, LTBday;
     string nrFlights;
+	string phoneNumber;
 
     infich.open(passFile);
 
@@ -61,6 +62,8 @@ void Company::openPassFile () {
             job = readComplexString(cardStream, ';');
 
             vector <flightsYear> newPass;
+
+			cardStream >> phoneNumber >> aux;
 
 			cardStream >> LTByear >> aux >> LTBmonth >> aux >> LTBday >> aux;
 
@@ -567,8 +570,8 @@ bool Company::addToHashTable(PassengerWCard p1)
 {
 	pair<iteratorH, bool> res = inactivePassengers.insert(p1);
 	if (res.second == false) { //não inseriu, já existia  ... VAMOS SO ATUALIZAR O MEMBRO DADO lastTicketBought
-		iteratorH it = res.first;		PassengerWCard ptmp = *it;		inactivePassengers.erase(it);
-		ptmp.setLastTicketBought(p1.getLastTicketBought());
+		iteratorH it = res.first;		inactivePassengers.erase(it);
+		inactivePassengers.insert(p1);
 		return false;
 	}
 	return true;

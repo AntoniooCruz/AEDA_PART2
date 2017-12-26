@@ -9,22 +9,9 @@
 #include <sstream>
 #include "Reservation.h"
 #include "Date.h"
+#include <unordered_set>
 
 using namespace std;
-
-struct hPalF {
-	int operator() (const PassengerWCard& p1) const
-	{
-		return p1.getId();
-	}
-};
-
-struct eqPalF {
-	bool operator() (const PassengerWCard& p1, const PassengerWCard& p2) const
-	{
-		return p1.getId() == p2.getId();
-	}
-};
 
 class Reservation;
 
@@ -123,10 +110,11 @@ class PassengerWCard : public Passenger
 {
 private:
 	unsigned int id;								/** < @brief Id of the passenger in the company */
+	string phoneNumber;								/** < @brief phone number of the passenger in the company */
 	vector <flightsYear> averageFlights;			
 	float flightYear;								/** < @brief Average flights per year */
 	string job;										/** < @brief Job of the passenger */
-	Date lastTicketBought;						/** < @brief The date of the last ticket bought*/
+	Date lastTicketBought;							/** < @brief The date of the last ticket bought*/
 
 public:
 	
@@ -170,6 +158,12 @@ public:
 	*/
 	void setId (unsigned int id);
 	/**
+	* @brief change the Passengers phone number
+	* @param new phone number
+	* @return false if the new number has more or less than 9 digits
+	*/
+	bool setPhoneNumber(string pn);
+	/**
 	* @brief changes LastTicketBought
 	*/
 	void setLastTicketBought(Date lastTicketBought);
@@ -178,6 +172,10 @@ public:
 	* @return A string "Card" or "noCard"
 	*/
 	string getType() const;
+	/**
+	* @return string with phone number
+	*/
+	string getPhoneNumber() const;
 	/**
 	* @brief Adds the reservation to the passenger
 	* @param r A pointer to the reservation of the passenger

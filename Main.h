@@ -157,6 +157,14 @@ void printAllFlights(Company &companyName);
 void addPassenger(Company &companyName);
 
 /**
+* @brief User's interface to change the phone number registered a passenger: the user is asked for the passenger's id.
+* The passenger's information is printed at the end if the operation was successfully
+* @throw operationCanceled If the user's input is 0
+* @param companyName The company where to the passenger is being deleted from
+*/
+void changePhoneNumber(Company &companyName);
+
+/**
 * @brief User's interface to delete registered a passenger: the user is asked for the passenger's id.
 * The passenger's information is printed at the end if it was deleted successfully
 * @throw operationCanceled If the user's input is 0, the passenger is not deleted

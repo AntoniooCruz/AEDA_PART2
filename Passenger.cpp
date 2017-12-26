@@ -164,7 +164,19 @@ Date PassengerWCard::getLastTicketBought() const
 	return lastTicketBought;
 }
 
+bool PassengerWCard::setPhoneNumber(string pn)
+{
+	if (pn.size() != 9) return false;
+	this->phoneNumber = pn;
+	return true;
+}
+
 void PassengerWCard::setLastTicketBought(Date lastTicketBought)
 {
 	this->lastTicketBought = lastTicketBought;
+}
+
+string PassengerWCard::getPhoneNumber() const
+{
+	return phoneNumber;
 }

@@ -13,6 +13,7 @@
 #include "tecnico.h"
 #include <unordered_set>
 
+
 using namespace std;
 
 struct SortOrder
@@ -32,8 +33,23 @@ class PassengerWCard;
  * @class Company Class that represents a airline company where are stored all its planes and registered passengers
  */
 
-typedef unordered_set<PassengerWCard, hPalF, eqPalF>::iterator iteratorH;
-typedef unordered_set<PassengerWCard, hPalF, eqPalF> tabH;
+struct hPWC {
+	int operator() (const PassengerWCard& p1) const
+	{
+		int i = p1.getId();
+		return i;
+	}
+};
+
+struct eqPWC {
+	bool operator() (const PassengerWCard& p1, const PassengerWCard& p2) const
+	{
+		return p1.getId() == p2.getId();
+	}
+};
+
+typedef unordered_set<PassengerWCard, hPWC, eqPWC>::iterator iteratorH;
+typedef unordered_set<PassengerWCard, hPWC, eqPWC> tabH;
 
 class Company
 {
