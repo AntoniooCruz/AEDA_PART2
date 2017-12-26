@@ -63,6 +63,12 @@ string Date::getDate() const {
     return (syear + "/" + to_DateString(month) + "/" + to_DateString(day));
 }
 
+Date Date::getNow() {
+    time_t t = time(0);
+    struct tm * now = localtime(&t);
+    return Date (now->tm_year + 1900, (now->tm_mon + 1), now->tm_mday);
+}
+
 string Date::to_DateString (unsigned int date) const {
     if (date < 10)
         return ("0" + to_string(date));
@@ -116,6 +122,45 @@ bool Date::past(unsigned int year, unsigned int month, unsigned int day) {
         return (month < now->tm_mon + 1);
     }
     return (year < now->tm_year + 1900);
+}
+
+bool Date::operator< (const Date &d) const{
+    if (getYear() == d.getYear()) {
+
+        if (getMonth() == d.getMonth()) {
+
+            return getDay() < d.getDay();
+        }
+        else {
+            return getMonth() < d.getMonth();
+        }
+    }
+    else {
+        return getYear() < d.getYear();
+    }
+}
+
+bool Date::operator== (const Date &d) const {
+    return (getYear() == d.getYear() && getMonth() == d.getMonth() && getDay() == d.getDay());
+}
+
+Date Date::operator+(int add) const {
+    unsigned int eDay = getDay() + add, eMon = getMonth(), eYea = getYear();
+
+
+            if (eDay > 30) {
+                eMon = eMon + eMon/30;
+                eDay = eMon % 30;
+            }
+
+            if (eMon > 12) {
+                eYea = eYea + eYea/12;
+                eMon = eYea % 12;
+            }
+
+    Date sum (eYea, eMon, eDay);
+
+    return sum;
 }
 
 ostream& operator<< (ostream &os, const Date &d) {

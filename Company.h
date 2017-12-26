@@ -18,10 +18,10 @@ struct SortOrder
 {
 	bool operator()(const Plane* p1, const Plane* p2)
 	{
-		if (p1->getNextMaintenace() == p2->getNextMaintenace())
+		if (p1->getNextMaintenance() == p2->getNextMaintenance())
 			return p1->getId() < p2->getId();
 		else
-			return p1->getNextMaintenace() < p2->getNextMaintenace();
+			return p1->getNextMaintenance() < p2->getNextMaintenance();
 	}
 };
 

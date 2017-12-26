@@ -16,7 +16,7 @@ Plane::Plane(unsigned int nrPlaces) {
 	nameSeats();
 }
 
-Plane::Plane(unsigned int nrPlaces, string model, int maintenanceRate, int nextMaintenance) {
+Plane::Plane(unsigned int nrPlaces, string model, int maintenanceRate, Date nextMaintenance) {
 	this->nrPlaces = nrPlaces;
 	this->model = model;
 	this->maintenanceRate = maintenanceRate;
@@ -29,13 +29,13 @@ Plane::Plane (string textLine){
     istringstream planeStream (textLine);
     string arrAirp, depAirp, model;
     char aux, type;
-	unsigned int places, year, month, day, hour, minutes, duration, id,rate,nextInsp;
+	unsigned int places, year, month, day, hour, minutes, duration, id,rate, nextInsp;
 	float price;
 
-    planeStream >> id >> aux >> places >> aux >> model >> aux >> rate >> aux >> nextInsp >> aux;
+    planeStream >> id >> aux >> places >> aux >> model >> aux >> rate >> aux >> nextInsp;
 	this->model = model;
 	this->maintenanceRate = rate;
-	this->nextMaintenance = nextInsp;
+	this->nextMaintenance = Date::getNow() + nextInsp;
 
 	this->nrPlaces = places;
 	this->id = id;
@@ -198,18 +198,15 @@ vector<string> Plane::getSeatsNames() const {
 	return seatsN;
 }
 
-string Plane::getModel() const
-{
+string Plane::getModel() const {
 	return model;
 }
 
-int Plane::getMaintenaceRate() const
-{
+int Plane::getMaintenanceRate() const {
 	return maintenanceRate;
 }
 
-int Plane::getNextMaintenace() const
-{
+Date Plane::getNextMaintenance() const {
 	return nextMaintenance;
 }
 
@@ -359,7 +356,7 @@ bool Plane::operator<(const Plane &p) {
 ostream& operator<< (ostream &os, const Plane &p) {
 	os << "Id: " << p.id << endl
 	   << "Model: " << p.model <<endl
-	   << "Days until next inspection: " << p.nextMaintenance << endl
+	   << "Date of next inspection: " << p.nextMaintenance << endl
 	   << "Nr of places: " << p.nrPlaces << endl
 	   << "Flights";
 

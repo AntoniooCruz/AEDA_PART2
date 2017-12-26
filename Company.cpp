@@ -184,7 +184,7 @@ void Company::closePlanesFile() {
 
     for (int i = 0; i < planes.size(); i++) {
         saveData << planes[i]->getId() << " ; " << planes[i]->getNrPlaces();
-		saveData << " , " << planes[i]->getModel() << " , " << planes[i]->getMaintenaceRate() << " , " << planes[i]->getNextMaintenace();
+		saveData << " , " << planes[i]->getModel() << " , " << planes[i]->getMaintenanceRate() << " , " << planes[i]->getNextMaintenance();
 
         temp = planes[i]->getFlights();
 

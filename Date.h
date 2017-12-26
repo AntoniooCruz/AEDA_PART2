@@ -61,6 +61,12 @@ public:
     virtual string getDate() const;
 
     /**
+     * @brief Calculates the current time
+     * @return The date matching the current time
+     */
+    static Date getNow ();
+
+    /**
      * @param date One of the date's member values: month or day
      * @return A string of the attribute received as a parameter. If it is smaller than 10, adds a 0 before the digit
      */
@@ -104,6 +110,23 @@ public:
     static bool past (unsigned int year, unsigned int month, unsigned int day);
 
     /* operator overloading */
+
+    Date operator+ (int add) const;
+
+    /**
+    * @brief Operator < overload to compare 2 dates. One date is smaller than the other if it is previous to the latter.
+    * @param d The date to which this date is compared to
+    * @return True, if this date is previous to the other one, False, otherwise
+    */
+    virtual bool operator<(const Date &d) const;
+
+    /**
+     * @brief Operator == overload to compare 2 dates. Two dates are equal if all of their member values are equal
+     * @param d The date to which this date is compared to
+     * @return True, if they're equal, False otherwise
+     */
+    virtual bool operator==(const Date &d) const;
+
     /**
      * @brief Operator << overload to print a date: year/month/day
      * @param os
@@ -220,7 +243,7 @@ public:
     /* static methods */
     /**
      * @brief Calculates the current time
-     * @return The date matches the current time
+     * @return The date matching the current time
      */
     static DateFlight getNow();
 

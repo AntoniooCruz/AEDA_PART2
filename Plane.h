@@ -25,7 +25,7 @@ private:
 	vector<string> seatsN;				/** < @brief A vector of strings which are the name of seats of the plane */
 	string model;						/** < @brief The name of the model of the plane */
 	int maintenanceRate;				/** < @brief The rate at which the plane must be inspected (in days) */
-	int nextMaintenance;				/** < @brief How many days until the next maintenance */
+	Date nextMaintenance;		        /** < @brief How many days until the next maintenance */
 
 public:
 	/**
@@ -40,7 +40,7 @@ public:
 	 */
     Plane (unsigned int nrPlaces);
 
-	Plane(unsigned int nrPlaces, string model, int maintenanceRate, int nextMaintenance);
+	Plane(unsigned int nrPlaces, string model, int maintenanceRate, Date nextMaintenance);
 
 	/**
 	 * @brief This constructor is used when reading form the files
@@ -84,12 +84,12 @@ public:
 	/**
 	* @return The rate at which the plane must be inspected *
 	*/
-	int getMaintenaceRate() const;
+	int getMaintenanceRate() const;
 
 	/**
 	* @return How many days until the next inspection *
 	*/
-	int getNextMaintenace() const;
+	Date getNextMaintenance() const;
 
 	/* set methods */
 

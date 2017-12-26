@@ -165,7 +165,9 @@ public:
 	* @return If the first passenger's id < p2.id then return true, otherwise return false
 	*/
 	Reservation deleteReserv(string seat, unsigned int idF);
-    bool operator< (const PassengerWCard &p) const;
+
+	bool operator< (const PassengerWCard &p) const;
+
 	/**
 	* @brief Operator << overload to print the information of a PassengerWCard
 	* @param os

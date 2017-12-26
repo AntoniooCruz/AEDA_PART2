@@ -352,20 +352,19 @@ void reservationsMenu(Company &companyName) {
 void maintenanceMenu(Company &companyName) {
 	int choice = 0;
 
-	while (choice != 6) {
+	while (choice != 5) {
 		try {
             cout << "____________________________________________________" << endl;
             cout << "|                   MANAGE MAINTENANCE             |" << endl;
             cout << "|                                                  |" << endl;
             cout << "|        Type your option:                         |" << endl;
-            cout << "|     1) Schedule maintenance                      |" << endl;
-            cout << "|     2) Cancel maintenance                        |" << endl;
-            cout << "|     3) Delete maintenance                        |" << endl;
-            cout << "|     4) List maintenances to do                   |" << endl;
-            cout << "|     5) List maintenances on a date               |" << endl;
-            cout << "|     6) Go Back to Main Menu                      |" << endl;
+            cout << "|     1) Cancel maintenance                        |" << endl;
+            cout << "|     2) Postpone maintenance                      |" << endl;
+            cout << "|     3) List maintenances to do                   |" << endl;
+            cout << "|     4) List maintenances on a date               |" << endl;
+            cout << "|     5) Go Back to Main Menu                      |" << endl;
             cout << "|    Option: ";
-            choice = checkBoundaries(1, 6);
+            choice = checkBoundaries(1, 5);
 
 			switch (choice) {
                 case 1:
@@ -382,10 +381,6 @@ void maintenanceMenu(Company &companyName) {
                     break;
 
                 case 4:
-                    cout << endl;
-                    break;
-
-                case 5:
                     cout << endl;
                     break;
 
@@ -484,7 +479,9 @@ void addPlane(Company &companyName) {
         nextMaintenance = maintenanceRate;
 
 
-        Plane *adding = new Plane(places, model, maintenanceRate, nextMaintenance);
+
+
+        Plane *adding = new Plane(places, model, maintenanceRate, Date::getNow() + nextMaintenance);
         companyName.addPlane(adding);
 
         cout << "\nThe plane was added successfully!\n\n";
@@ -1527,7 +1524,7 @@ ostream& operator<< (ostream &os, const PassengerWCard &p) {
 
 int main()
 {
-	Company ryanair("passengers.txt", "planes.txt","reserv.txt");
+	Company ryanair("/Users/carqueja/Repositories/AEDA_PART2/passengers.txt", "/Users/carqueja/Repositories/AEDA_PART2/planes.txt","/Users/carqueja/Repositories/AEDA_PART2/reserv.txt");
 	mainMenu(ryanair);
 	return 0;
 }

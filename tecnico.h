@@ -15,7 +15,7 @@ private:
 	static unsigned int lastId;	                    /** < @brief Static attribute where the last technician's id is saved */
     string name;                                    /** < @brief Technician's name */
 	vector<string> model;	                        /** < @brief vector with technician's specialties */
-	vector<Plane *>  planesToDo; // falta adicionar modelos a class planes mas acho que se pode ~(acho que se pode dizer que o modelo do aviao e o numero de lugares... so uma ideia)
+	vector<Plane *>  planesToDo;
 public:
 	/**
 	* @brief Calculates the newId based of the value of lastId
