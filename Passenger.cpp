@@ -1,4 +1,3 @@
-
 #include "Passenger.h"
 
 using namespace std;
@@ -158,4 +157,14 @@ Reservation PassengerWCard::deleteReserv(string seat, unsigned int idF) {
 
 bool PassengerWCard::operator<(const PassengerWCard &p) const {
 	return this->getId() < p.getId();
+}
+
+Date Passenger::getLastTicketBought() const
+{
+	return lastTicketBought;
+}
+
+void Passenger::setLastTicketBought(Date lastTicketBought)
+{
+	this->lastTicketBought = lastTicketBought;
 }

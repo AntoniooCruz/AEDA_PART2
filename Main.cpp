@@ -1454,6 +1454,7 @@ ostream& operator<< (ostream &os, const PassengerWCard &p) {
 int main()
 {
 	Company ryanair("passengers.txt", "planes.txt","reserv.txt");
+
 	mainMenu(ryanair);
 	return 0;
 }

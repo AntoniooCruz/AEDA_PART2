@@ -24,6 +24,8 @@ private:
 	string name;								/** < @brief Name of the passenger */
 	Date anniversary;							/** < @brief The date of birth of the passenger*/
 	vector<Reservation *> reserv;				/** < @brief A vector of pointers to the reservations the passenger made */
+	Date lastTicketBought;						/** < @brief The date of the last ticket bought*/
+
 
 public:
 	/**
@@ -52,6 +54,10 @@ public:
 	* @return The day when the passenger was born
 	*/
 	int getDay() const;
+	/**
+	* @return LastTicketBought
+	*/
+	Date getLastTicketBought() const;
 	/**
 	* @brief Calculates the discount that the passenger has
 	* @param price The base price without any discount
@@ -91,7 +97,10 @@ public:
 	* @return true if they have the same id
 	*/
 	bool operator== (const Passenger &p) const;
-
+	/**
+	* @brief changes LastTicketBought
+	*/
+	void setLastTicketBought(Date lastTicketBought);
 
 };
 

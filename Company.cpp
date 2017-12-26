@@ -39,6 +39,7 @@ void Company::openPassFile () {
     string textLine, name, job;
     char aux;
     unsigned int year, month, day, id, flight, year2 = 0;
+	unsigned int LTByear, LTBmonth, LTBday;
     string nrFlights;
 
     infich.open(passFile);
@@ -61,6 +62,8 @@ void Company::openPassFile () {
 
             vector <flightsYear> newPass;
 
+			cardStream >> LTByear >> aux >> LTBmonth >> aux >> LTBday >> aux;
+
             while (! cardStream.eof()){
 
                 cardStream >> year2 >> aux >> flight >> aux;
@@ -74,7 +77,13 @@ void Company::openPassFile () {
 
             }
 
-            PassengerCards.push_back(new PassengerWCard (id, name, job, anniversary, newPass));
+			PassengerWCard * ptrP = new PassengerWCard(id, name, job, anniversary, newPass);
+
+            PassengerCards.push_back(ptrP);
+
+			Date D (LTByear, LTBmonth, LTBday);
+
+			ptrP->setLastTicketBought(D);
 		
         }
     } else {
@@ -153,7 +162,7 @@ void Company::closePassFile() {
 
     for (int i = 0; i < PassengerCards.size(); i++) {
         saveData << PassengerCards[i]->getId() << " ; " << PassengerCards[i]->getName() + " ; " + PassengerCards[i]->getDateBirth()
-                    + " ; " + PassengerCards[i]->getJob() + " ; ";
+                    + " ; " + PassengerCards[i]->getJob() + " ; " + PassengerCards[i]->getLastTicketBought().getDate() + " ; ";
 
         vector <flightsYear> flightsPerYear = PassengerCards.at(i)->getFlightsPerYear();
 
