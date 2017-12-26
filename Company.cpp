@@ -304,7 +304,7 @@ void Company::addPlane(Plane *p) {
 
         i = nextId<Plane *>(planes);
 
-        if (i == 0) {
+        if (i == 0 && planes[0]->getId() != 1) {
             id = 1;
         }
         else {
