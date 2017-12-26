@@ -5,11 +5,15 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <set>
+#include <queue>
 #include "Passenger.h"
 #include "Plane.h"
 #include "Exceptions.cpp"
-#include <set>
+#include "tecnico.h"
+
 using namespace std;
+
 struct SortOrder
 {
 	bool operator()(const Plane* p1, const Plane* p2)
@@ -31,7 +35,8 @@ class Company
 {
 private:
     vector<PassengerWCard *> PassengerCards;			/** < @brief All of passengers registered in the company */
-    vector<Plane *> planes;							/** < @brief All of the planes of the airline company */
+    vector<Plane *> planes;							    /** < @brief All of the planes of the airline company */
+    queue <Technician> technicians;                     /** < @brief All of the technicians of the company ordered according to their availability*/
 	string planesFile, passFile, reservFile;			/** < @brief Names of the files where the information is imported from */
 	set<Plane*, SortOrder> maintenance;
 public:
@@ -191,7 +196,7 @@ public:
 	 */
     Flight * searchFlight (unsigned int FlightId);
 	
-
+    void addTechnician (Technician &t);
 
 };
 

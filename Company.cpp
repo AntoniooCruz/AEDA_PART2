@@ -499,6 +499,7 @@ PassengerWCard * Company::searchPassenger(unsigned int nrid, int &i) {
 	throw NoSuchPassenger(nrid);
 
 }
+
 void Company::maintenanceList()
 {
 	unsigned int i = 1;
@@ -508,6 +509,7 @@ void Company::maintenanceList()
 		cout << *(*it) <<endl;
 	}
 }
+
 void Company::insertPlanesInTree()
 {
 	for (unsigned int i = 0; i < planes.size(); i++)
@@ -535,3 +537,8 @@ Flight * Company::searchFlight (unsigned int nrid) {
 
 }
 
+
+/* EDIT TECHNICIANS */
+void Company::addTechnician(Technician &t) {
+    technicians.push(t);
+}

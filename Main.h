@@ -215,6 +215,12 @@ void deleteReservation(Company &companyName);
  */
 void printAllReservations (Company &companyName);
 
+/**
+ * @brief User's interface to add a technician to the company: user is asked for a name, and the model's the technician is qualified to work with
+ * @param companyName The company to which the technician will be added
+ */
+void addTechnician (Company &companyName);
+
 
 /*OPERATORS OVERLOAD*/
 

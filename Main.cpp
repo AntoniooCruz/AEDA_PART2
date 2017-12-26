@@ -353,18 +353,18 @@ void maintenanceMenu(Company &companyName) {
 
 	while (choice != 6) {
 		try {
-			cout << "____________________________________________________" << endl;
-			cout << "|                   MANAGE MAINTENANCE             |" << endl;
-			cout << "|                                                  |" << endl;
-			cout << "|        Type your option:                         |" << endl;
+            cout << "____________________________________________________" << endl;
+            cout << "|                   MANAGE MAINTENANCE             |" << endl;
+            cout << "|                                                  |" << endl;
+            cout << "|        Type your option:                         |" << endl;
             cout << "|     1) Schedule maintenance                      |" << endl;
-            cout << "|     2) Cancel maintenance                     |" << endl;
-            cout << "|     3) Delete maintenance                      |" << endl;
-			cout << "|     4) List maintenances to do                   |" << endl;
-            cout << "|     5) List maintenances on a date                     |" << endl;
+            cout << "|     2) Cancel maintenance                        |" << endl;
+            cout << "|     3) Delete maintenance                        |" << endl;
+            cout << "|     4) List maintenances to do                   |" << endl;
+            cout << "|     5) List maintenances on a date               |" << endl;
             cout << "|     6) Go Back to Main Menu                      |" << endl;
-			cout << "|    Option: ";
-			choice = checkBoundaries(1, 6);
+            cout << "|    Option: ";
+            choice = checkBoundaries(1, 6);
 
 			switch (choice) {
                 case 1:
@@ -403,13 +403,13 @@ void technicianMenu (Company &companyName) {
     while (choice != 6) {
         try {
             cout << "____________________________________________________" << endl;
-            cout << "|                   MANAGE MAINTENANCE             |" << endl;
+            cout << "|                   MANAGE TECHNICIANS             |" << endl;
             cout << "|                                                  |" << endl;
             cout << "|        Type your option:                         |" << endl;
-            cout << "|     1) Add technician                      |" << endl;
-            cout << "|     2) Delete technician                     |" << endl;
-            cout << "|     3) Print technician's information                       |" << endl;
-            cout << "|     4) Print all technicians of a model                   |" << endl;
+            cout << "|     1) Add technician                            |" << endl;
+            cout << "|     2) Delete technician                         |" << endl;
+            cout << "|     3) Print technician's information            |" << endl;
+            cout << "|     4) Print all technicians of a model          |" << endl;
             cout << "|     5) Print all technicians                     |" << endl;
             cout << "|     6) Go Back to Main Menu                      |" << endl;
             cout << "|    Option: ";
@@ -449,15 +449,15 @@ void technicianMenu (Company &companyName) {
 /*             MANAGE PLANES        */
 
 void addPlane(Company &companyName) {
-	int places;
-	string model;
-	int maintenanceRate;
-	int nextMaintenance;
-	cout << "\nType 0 to cancel the operation\n";
-	cout << "Nr of places (multiple of 6): ";
-	places = checkBoundaries(0);
+    int places;
+    string model;
+    int maintenanceRate;
+    int nextMaintenance;
+    cout << "\nType 0 to cancel the operation\n";
+    cout << "Nr of places (multiple of 6): ";
+    places = checkBoundaries(0);
 
-	if (places != 0) {
+    if (places != 0) {
 
         if (places % 6 != 0) {
             places = places + (6 - places % 6);
@@ -465,31 +465,30 @@ void addPlane(Company &companyName) {
             cout << "Number of places was round up to nearest multiple: " << places << endl;
         }
 
-		cout << "Name of the model of the Plane \n";
-		model = checkString(model);
+        cout << "Name of the model of the Plane \n";
+        model = checkString(model);
 
-		if (model == "0")
-			throw OperationCanceled();
+        if (model == "0")
+            throw OperationCanceled();
 
-		cout << "Rate at which the plane must be inspected(in days): ";
-		maintenanceRate = checkBoundaries(0);
+        cout << "Rate at which the plane must be inspected(in days): ";
+        maintenanceRate = checkBoundaries(0);
 
-		if (maintenanceRate == 0)
-			throw OperationCanceled();
-		nextMaintenance = maintenanceRate;
+        if (maintenanceRate == 0)
+            throw OperationCanceled();
+        nextMaintenance = maintenanceRate;
 
 
-		Plane * adding = new Plane(places,model,maintenanceRate,nextMaintenance);
-		companyName.addPlane(adding);
+        Plane *adding = new Plane(places, model, maintenanceRate, nextMaintenance);
+        companyName.addPlane(adding);
 
         cout << "\nThe plane was added successfully!\n\n";
         cout << "Plane Information\n"
              << *adding;
-	}
-	else
-		throw OperationCanceled();
+    } else
+        throw OperationCanceled();
 
-    waitToContinue ();
+    waitToContinue();
 }
 
 void deletePlane(Company &companyName) {
@@ -1403,6 +1402,36 @@ void printAllReservations (Company &companyName) {
 
         }
     }
+}
+
+void addTechnician (Company &companyName) {
+    string name, model;
+    int nrOfModels;
+    vector <string> models;
+
+    cout << "\nType 0 to cancel the operation\n";
+    cout << "Name: ";
+    name = checkString(name);
+
+    if (name == "0")
+        throw OperationCanceled ();
+
+    cout << "Nr of model's that is qualified to repair: ";
+    nrOfModels = checkBoundaries(0);
+
+    for (int i = 0; i < nrOfModels; i++) {
+        cout << "Model: ";
+        model = checkString(model);
+
+        if (model == "0")
+            throw OperationCanceled ();
+
+        models.push_back(model);
+    }
+
+    Technician t (name, models);
+
+    companyName.addTechnician(t);
 }
 
 /*         OPERATOR OVERLOADING       */

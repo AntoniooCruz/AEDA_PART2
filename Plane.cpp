@@ -306,6 +306,8 @@ Flight * Plane::postponeFlight(Flight *f, unsigned int duration) {
             return f;
 		}
 	}
+
+	return f;
 }
 
 bool Plane::dateOrder(Flight * &f1, Flight * &f2) {
