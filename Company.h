@@ -11,6 +11,7 @@
 #include "Plane.h"
 #include "Exceptions.cpp"
 #include "tecnico.h"
+#include <unordered_set>
 
 using namespace std;
 
@@ -31,6 +32,9 @@ class PassengerWCard;
  * @class Company Class that represents a airline company where are stored all its planes and registered passengers
  */
 
+typedef unordered_set<PassengerWCard, hPalF, eqPalF>::iterator iteratorH;
+typedef unordered_set<PassengerWCard, hPalF, eqPalF> tabH;
+
 class Company
 {
 private:
@@ -39,6 +43,8 @@ private:
     queue <Technician> technicians;                     /** < @brief All of the technicians of the company ordered according to their availability*/
 	string planesFile, passFile, reservFile;			/** < @brief Names of the files where the information is imported from */
 	set<Plane*, SortOrder> maintenance;
+	tabH inactivePassengers;
+
 public:
 	/*
 	 * @brief Constructor called when there's an error opening the files. No data is imported.
@@ -197,6 +203,13 @@ public:
     Flight * searchFlight (unsigned int FlightId);
 	
     void addTechnician (Technician &t);
+
+	/**
+	* @brief update hash table with new information
+	*/
+	void updateHashTable();
+
+	bool addToHashTable(PassengerWCard p1);
 
 };
 

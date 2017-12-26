@@ -551,3 +551,25 @@ Flight * Company::searchFlight (unsigned int nrid) {
 void Company::addTechnician(Technician &t) {
     technicians.push(t);
 }
+
+void Company::updateHashTable()
+{
+	DateFlight nowR = DateFlight::getNow();
+	for (size_t i = 0; i < PassengerCards.size(); i++) {
+		DateFlight LTB(PassengerCards[i]->getLastTicketBought().getYear(), PassengerCards[i]->getLastTicketBought().getMonth(), PassengerCards[i]->getLastTicketBought().getDay(), 0, 0);
+		if (nowR - LTB  > 525600) {
+			addToHashTable(*PassengerCards[i]);
+		}
+	}
+}
+
+bool Company::addToHashTable(PassengerWCard p1)
+{
+	pair<iteratorH, bool> res = inactivePassengers.insert(p1);
+	if (res.second == false) { //não inseriu, já existia  ... VAMOS SO ATUALIZAR O MEMBRO DADO lastTicketBought
+		iteratorH it = res.first;		PassengerWCard ptmp = *it;		inactivePassengers.erase(it);
+		ptmp.setLastTicketBought(p1.getLastTicketBought());
+		return false;
+	}
+	return true;
+}

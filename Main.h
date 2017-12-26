@@ -221,7 +221,6 @@ void printAllReservations (Company &companyName);
  */
 void addTechnician (Company &companyName);
 
-
 /*OPERATORS OVERLOAD*/
 
 ostream& operator<< (ostream &os, const PassengerWCard &p);

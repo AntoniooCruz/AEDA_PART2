@@ -159,12 +159,12 @@ bool PassengerWCard::operator<(const PassengerWCard &p) const {
 	return this->getId() < p.getId();
 }
 
-Date Passenger::getLastTicketBought() const
+Date PassengerWCard::getLastTicketBought() const
 {
 	return lastTicketBought;
 }
 
-void Passenger::setLastTicketBought(Date lastTicketBought)
+void PassengerWCard::setLastTicketBought(Date lastTicketBought)
 {
 	this->lastTicketBought = lastTicketBought;
 }

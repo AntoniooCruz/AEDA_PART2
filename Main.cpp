@@ -1211,6 +1211,12 @@ void addReservationToPass(Company &companyName)
 
 	fc1->addReservation(adding);
 
+	DateFlight nowR = DateFlight::getNow();
+
+	Date nowRDate(nowR.getYear(), nowR.getMonth(), nowR.getDay());
+
+	pc1->setLastTicketBought(nowRDate);
+
     waitToContinue ();
 }
 
@@ -1249,6 +1255,8 @@ void addReservationAndNewPass(Company &companyName)
 	Date anniversary(year, month, day);
 
 	Passenger * p1 = new Passenger(name, anniversary);
+
+	PassengerWCard * pc1 = dynamic_cast<PassengerWCard*> (p1);
 
 	vector<vector<Flight*> > airportFlights = companyName.getAirportsFlights();
 
@@ -1314,6 +1322,12 @@ void addReservationAndNewPass(Company &companyName)
 
 	fc1->addReservation(adding);
 
+	DateFlight nowR = DateFlight::getNow();
+
+	Date nowRDate(nowR.getYear(), nowR.getMonth(), nowR.getDay());
+
+	pc1->setLastTicketBought(nowRDate);
+
     waitToContinue ();
 }
 
@@ -1349,6 +1363,8 @@ void deleteReservation(Company &companyName)
 		{
 			cout << "Reservation removed successfully \n";
 		}
+
+		//TODO: tratar da hash table aqui (nao sei ainda o que fazer aqui...)
 
     waitToContinue ();
 }
@@ -1447,8 +1463,6 @@ ostream& operator<< (ostream &os, const PassengerWCard &p) {
 
 	return os;
 }
-
-
 
 
 int main()

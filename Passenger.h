@@ -12,6 +12,20 @@
 
 using namespace std;
 
+struct hPalF {
+	int operator() (const PassengerWCard& p1) const
+	{
+		return p1.getId();
+	}
+};
+
+struct eqPalF {
+	bool operator() (const PassengerWCard& p1, const PassengerWCard& p2) const
+	{
+		return p1.getId() == p2.getId();
+	}
+};
+
 class Reservation;
 
 /*
@@ -24,7 +38,6 @@ private:
 	string name;								/** < @brief Name of the passenger */
 	Date anniversary;							/** < @brief The date of birth of the passenger*/
 	vector<Reservation *> reserv;				/** < @brief A vector of pointers to the reservations the passenger made */
-	Date lastTicketBought;						/** < @brief The date of the last ticket bought*/
 
 
 public:
@@ -54,10 +67,6 @@ public:
 	* @return The day when the passenger was born
 	*/
 	int getDay() const;
-	/**
-	* @return LastTicketBought
-	*/
-	Date getLastTicketBought() const;
 	/**
 	* @brief Calculates the discount that the passenger has
 	* @param price The base price without any discount
@@ -97,10 +106,7 @@ public:
 	* @return true if they have the same id
 	*/
 	bool operator== (const Passenger &p) const;
-	/**
-	* @brief changes LastTicketBought
-	*/
-	void setLastTicketBought(Date lastTicketBought);
+	
 
 };
 
@@ -120,6 +126,7 @@ private:
 	vector <flightsYear> averageFlights;			
 	float flightYear;								/** < @brief Average flights per year */
 	string job;										/** < @brief Job of the passenger */
+	Date lastTicketBought;						/** < @brief The date of the last ticket bought*/
 
 public:
 	
@@ -134,6 +141,10 @@ public:
 	* @return A string with the passengers job
 	*/
 	string getJob() const;
+	/**
+	* @return LastTicketBought
+	*/
+	Date getLastTicketBought() const;
 	/**
 	* @return Average flights per year of the passenger
 	*/
@@ -159,6 +170,10 @@ public:
 	*/
 	void setId (unsigned int id);
 	/**
+	* @brief changes LastTicketBought
+	*/
+	void setLastTicketBought(Date lastTicketBought);
+	/**
 	* @brief Returns a string used to see if the Passenger is a registred one or not
 	* @return A string "Card" or "noCard"
 	*/
@@ -174,6 +189,7 @@ public:
 	* @return If the first passenger's id < p2.id then return true, otherwise return false
 	*/
 	Reservation deleteReserv(string seat, unsigned int idF);
+
     bool operator< (const PassengerWCard &p) const;
 	/**
 	* @brief Operator << overload to print the information of a PassengerWCard
