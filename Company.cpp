@@ -542,3 +542,51 @@ Flight * Company::searchFlight (unsigned int nrid) {
 void Company::addTechnician(Technician &t) {
     technicians.push(t);
 }
+
+Technician Company::deleteTechnician(int id) {
+    queue <Technician> temporary;
+    bool found = false;
+
+    Technician t = technicians.front();
+
+    while (! technicians.empty()) {
+
+        if (technicians.front().getId() == id) {
+            t = technicians.front();
+            technicians.pop();
+            found = true;
+        } else {
+            temporary.push(technicians.front());
+            technicians.pop();
+        }
+    }
+
+    technicians = temporary;
+
+    if (found)
+    return t;
+    else
+        throw NoSuchTechnician (id);
+}
+
+Technician Company::searchTechnician(int id) {
+    queue <Technician> temporary = technicians;
+
+    while (! temporary.empty()) {
+        if (temporary.front().getId() == id)
+            return temporary.front();
+
+        temporary.pop();
+    }
+
+    throw NoSuchTechnician (id);
+}
+
+void Company::printAllTechnicians() {
+    queue <Technician> temporary = technicians;
+
+    while (! temporary.empty()) {
+        cout << temporary.front() << endl << endl;
+        temporary.pop();
+    }
+}

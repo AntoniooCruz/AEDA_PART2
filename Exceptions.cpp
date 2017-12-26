@@ -54,6 +54,14 @@ public:
 	}
 };
 
+class NoSuchTechnician : public NoSuch {
+public:
+    NoSuchTechnician(unsigned int id) : NoSuch(id) {}
+    string getType() {
+        return "Technician";
+    }
+};
+
 /**
  * @class ErrorOpeningFile Exception thrown when there's an error opening a file
  */

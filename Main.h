@@ -221,6 +221,17 @@ void printAllReservations (Company &companyName);
  */
 void addTechnician (Company &companyName);
 
+/**
+ * @brief User's interface to delete a technician: user is asked for the technician's id
+ * @param companyName The company from which the technician will be deleted
+ */
+void deleteTechnician (Company &companyName);
+
+/**
+ * @brief Searches for and prints a technician information
+ * @param companyName The company to which the technician belongs
+ */
+void printTechnician (Company &companyName);
 
 /*OPERATORS OVERLOAD*/
 

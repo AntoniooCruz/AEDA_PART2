@@ -66,6 +66,7 @@ void waitToContinue () {
     getline(cin, waiting);
 }
 
+
 /*             MENUS          */
 
 void mainMenu(Company &companyName) {
@@ -394,13 +395,15 @@ void maintenanceMenu(Company &companyName) {
 		catch (OperationCanceled &e) {
 			cout << "Operation was canceled\n";
 		}
+
+		waitToContinue();
 	}
 }
 
 void technicianMenu (Company &companyName) {
     int choice = 0;
 
-    while (choice != 6) {
+    while (choice != 5) {
         try {
             cout << "____________________________________________________" << endl;
             cout << "|                   MANAGE TECHNICIANS             |" << endl;
@@ -409,32 +412,30 @@ void technicianMenu (Company &companyName) {
             cout << "|     1) Add technician                            |" << endl;
             cout << "|     2) Delete technician                         |" << endl;
             cout << "|     3) Print technician's information            |" << endl;
-            cout << "|     4) Print all technicians of a model          |" << endl;
-            cout << "|     5) Print all technicians                     |" << endl;
-            cout << "|     6) Go Back to Main Menu                      |" << endl;
+            cout << "|     4) Print all technicians                     |" << endl;
+            cout << "|     5) Go Back to Main Menu                      |" << endl;
             cout << "|    Option: ";
-            choice = checkBoundaries(1, 6);
+            choice = checkBoundaries(1, 5);
 
             switch (choice) {
                 case 1:
                     cout << endl;
-                    companyName.maintenanceList();
+					addTechnician(companyName);
                     break;
 
                 case 2:
                     cout << endl;
+					deleteTechnician(companyName);
                     break;
 
                 case 3:
                     cout << endl;
+					printTechnician(companyName);
                     break;
 
                 case 4:
                     cout << endl;
-                    break;
-
-                case 5:
-                    cout << endl;
+					companyName.printAllTechnicians();
                     break;
 
             }
@@ -443,8 +444,12 @@ void technicianMenu (Company &companyName) {
         catch (OperationCanceled &e) {
             cout << "Operation was canceled\n";
         }
+
+		waitToContinue();
     }
 }
+
+
 
 /*             MANAGE PLANES        */
 
@@ -918,8 +923,7 @@ void printAllFlights(Company &companyName) {
 
 /*             MANAGE PASSENGERS        */
 
-void addPassenger(Company &companyName)
-{
+void addPassenger(Company &companyName) {
 	string job, name;
 	int day, year, month;
     cout << "\nType 0 to cancel the operation\n";
@@ -969,8 +973,7 @@ void addPassenger(Company &companyName)
     waitToContinue ();
 }
 
-void deletePassenger(Company &companyName)
-{
+void deletePassenger(Company &companyName) {
 	int id;
 	bool invalidInput;
 
@@ -1004,8 +1007,7 @@ void deletePassenger(Company &companyName)
     waitToContinue ();
 }
 
-void printPassengerReservations(Company &companyName)
-{
+void printPassengerReservations(Company &companyName) {
 	int id, i;
 	bool invalidInput;
 
@@ -1093,8 +1095,7 @@ void printAllPassengers(Company &companyName) {
 
 /*			MANAGE RESERVATIONS			*/
 
-void addReservationToPass(Company &companyName)
-{
+void addReservationToPass(Company &companyName) {
 	bool invalPass;
 	int i,i2;
 	unsigned int idPass, idFlight, idAirport;
@@ -1214,8 +1215,7 @@ void addReservationToPass(Company &companyName)
     waitToContinue ();
 }
 
-void addReservationAndNewPass(Company &companyName)
-{
+void addReservationAndNewPass(Company &companyName) {
 	string name, seat;
 	int day, year, month;
 	int nOfFlights = Flight::getLastId();
@@ -1317,8 +1317,7 @@ void addReservationAndNewPass(Company &companyName)
     waitToContinue ();
 }
 
-void deleteReservation(Company &companyName)
-{
+void deleteReservation(Company &companyName) {
 	string name, seat;
 	unsigned int idFlight;
 	int nOfFlights = companyName.numOfFlights();
@@ -1404,6 +1403,9 @@ void printAllReservations (Company &companyName) {
     }
 }
 
+
+/*			MANAGE TECHNICIANS */
+
 void addTechnician (Company &companyName) {
     string name, model;
     int nrOfModels;
@@ -1419,9 +1421,15 @@ void addTechnician (Company &companyName) {
     cout << "Nr of model's that is qualified to repair: ";
     nrOfModels = checkBoundaries(0);
 
+	if (nrOfModels == 0)
+		throw OperationCanceled ();
+
+
+	cin.ignore();
+
     for (int i = 0; i < nrOfModels; i++) {
         cout << "Model: ";
-        model = checkString(model);
+		getline(cin , model);
 
         if (model == "0")
             throw OperationCanceled ();
@@ -1432,6 +1440,72 @@ void addTechnician (Company &companyName) {
     Technician t (name, models);
 
     companyName.addTechnician(t);
+
+	cout << "\nTechnician added sucessfully! \n"
+		 << "Technician information: \n"
+		 << t;
+}
+
+void deleteTechnician (Company &companyName) {
+	int id;
+	bool notfound = true;
+
+	cout << "\nType 0 to cancel the operation\n";
+	cout << "Id: ";
+
+	while (notfound) {
+		try {
+			id = checkBoundaries(0);
+
+			if (id == 0)
+				throw OperationCanceled();
+
+
+			Technician t = companyName.deleteTechnician(id);
+			notfound = false;
+
+			cout << "\nTechnician was deleted successfully\n"
+				 << "Technician information\n"
+				 << t;
+		}
+		catch (NoSuch &t) {
+			cout << "There isn't a " << t.getType() << " with that id, " << t.getId() << endl
+				 << "Try again: ";
+		}
+	}
+}
+
+void printTechnician (Company &companyName) {
+	int id;
+	bool notfound = true;
+
+	cout << "\nType 0 to cancel the operation\n";
+	cout << "Id: ";
+
+	while (notfound) {
+		try {
+			id = checkBoundaries(0);
+
+			if (id == 0)
+				throw OperationCanceled();
+
+
+			Technician t = companyName.searchTechnician(id);
+			notfound = false;
+
+			cout << "\nTechnician information: \n"
+				 << t;
+		}
+		catch (NoSuch &t) {
+			cout << "There isn't a " << t.getType() << " with that id, " << t.getId() << endl
+				 << "Try again: ";
+		}
+	}
+
+
+
+
+
 }
 
 /*         OPERATOR OVERLOADING       */

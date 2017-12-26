@@ -114,17 +114,17 @@ public:
     static string readComplexString (istringstream &s, char separate);
 
     /* Edit planes' vector */
-    /**
-     * @brief Adds a plane to the company. Calculates the id it should have and sets the plane id.
-     * @param p The plane to be added
-     */
+
 	void insertPlanesInTree();
 
 	void maintenanceList();
 
 	void maintenanceList(Date &d1);
 
-
+    /**
+     * @brief Adds a plane to the company. Calculates the id it should have and sets the plane id.
+     * @param p The plane to be added
+     */
     void addPlane(Plane *p);
 
     /**
@@ -195,8 +195,34 @@ public:
 	 * @return A pointer to the flight
 	 */
     Flight * searchFlight (unsigned int FlightId);
-	
+
+    /**
+     * @brief Adds a technician to the company inserting him in the queue according to his priority
+     * @param t Technician to be added to the company
+     */
     void addTechnician (Technician &t);
+
+    /**
+     * @brief Deletes a technician from the company's database
+     * @param id Id of the technician to be deleted
+     * @throw NoSuchTechnician If there is not a technician with the given id in th company's database
+     * @return The information of the deleted technician
+     */
+    Technician deleteTechnician (int id);
+
+    /**
+     * @brief Searches for a technician in the company
+     * @param id Id of the technician who is been searched
+     * @throw NoSuchTechnician If there's no technician with the given id
+     * @return The technician with the given id
+     */
+    Technician searchTechnician (int id);
+
+
+    /**
+     * @brief Prints all of the technicians of a company - the ones that are stored in the priority_queue
+     */
+    void printAllTechnicians ();
 
 };
 

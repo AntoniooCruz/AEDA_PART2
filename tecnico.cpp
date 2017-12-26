@@ -47,24 +47,31 @@ bool Technician::operator< (const Technician &t2) const {
 }
 
 ostream& operator<< (ostream &os, const Technician &t) {
-	string stros;
-	stros = "Id: " + to_string(t.getId()) + "\n";
-	stros += "Specialty:\n";
+
+	os << "Id: " << to_string(t.getId()) << endl
+       << "Name: " << t.getName() << endl
+       << "Specialty:\n";
+
 	vector<string> specTmp = t.getModel();
 
 	for (int i = 0; i < specTmp.size(); i++){
-		stros += "   *" + specTmp[i] + "\n";
-	}
-	stros += "To Do List (planes id):\n";
-
-	vector<Plane *> todoTmp = t.getPlanesToDo();
-
-	for (int i = 0; i < todoTmp.size(); i++) {
-		stros += "   *" + todoTmp[i]->getModel();
-		stros += " \n";
+		os << "   * " << specTmp[i] << endl;
 	}
 
-	os << stros;
+    vector<Plane *> todoTmp = t.getPlanesToDo();
+
+    if (todoTmp.size() == 0) {
+        os << "No maintenances schedule\n";
+    }
+    else {
+        os << "To Do List (planes id):\n";
+
+
+        for (int i = 0; i < todoTmp.size(); i++) {
+            os << "   * " << todoTmp[i]->getId() << endl;
+        }
+    }
+
 	return os;
 }
 

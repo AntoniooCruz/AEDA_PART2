@@ -57,6 +57,8 @@ public:
      * @return true if this technician has less maintenances schedule, false otherwise
      */
     bool operator< (const Technician &t) const;
+
+    friend ostream& operator<< (ostream &os, const Technician &t);
 };
 
 
