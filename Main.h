@@ -63,7 +63,17 @@ void passengersMenu(Company &companyName);
 */
 void reservationsMenu(Company &companyName);
 
+/**
+ * @brief Displays the menu to manage, edit, print maintenances' data
+ * @param companyName The company whose data will be edited or displayed
+ */
 void maintenanceMenu(Company &companyName);
+
+/**
+ * @brief Displays the menu to manage, edit, print technicians' data
+ * @param companyName The company whose data will be edited or displayed
+ */
+void technicianMenu (Company &companyName);
 
 /* MANAGE PLANES */
 /**

@@ -71,7 +71,7 @@ void waitToContinue () {
 void mainMenu(Company &companyName) {
 	int choice = 0;
 
-	while (choice != 6) {
+	while (choice != 7) {
 		cout << "____________________________________________________" << endl;
 		cout << "|                  MAIN MENU                       |" << endl;
 		cout << "|                                                  |" << endl;
@@ -81,10 +81,11 @@ void mainMenu(Company &companyName) {
 		cout << "|     3) Manage Passengers                         |" << endl;
 		cout << "|     4) Manage Reservations                       |" << endl;
 		cout << "|     5) Manage Maintenance                        |" << endl;
-		cout << "|     6) Exit                                      |" << endl;
+        cout << "|     6) Manage Tecnhicians                        |" << endl;
+		cout << "|     7) Exit                                      |" << endl;
 		cout << "|    Option: ";
 
-		choice = checkBoundaries(1, 6);
+		choice = checkBoundaries(1, 7);
 
 
 		switch (choice) {
@@ -108,7 +109,12 @@ void mainMenu(Company &companyName) {
 			maintenanceMenu(companyName);
 			break;
 
-		case 6:
+            case 6:
+                technicianMenu(companyName);
+                break;
+
+
+		case 7:
 			cout << endl;
 			companyName.logOut();
 			cout << "See you next time!\n";
@@ -341,28 +347,48 @@ void reservationsMenu(Company &companyName) {
 
 	}
 }
+
 void maintenanceMenu(Company &companyName) {
 	int choice = 0;
 
-	while (choice != 2) {
+	while (choice != 6) {
 		try {
 			cout << "____________________________________________________" << endl;
 			cout << "|                   MANAGE MAINTENANCE             |" << endl;
 			cout << "|                                                  |" << endl;
 			cout << "|        Type your option:                         |" << endl;
-			cout << "|     1) List Maintenances to do                   |" << endl;
-			cout << "|     2) Go Back to Main Menu                      |" << endl;
+            cout << "|     1) Schedule maintenance                      |" << endl;
+            cout << "|     2) Cancel maintenance                     |" << endl;
+            cout << "|     3) Delete maintenance                      |" << endl;
+			cout << "|     4) List maintenances to do                   |" << endl;
+            cout << "|     5) List maintenances on a date                     |" << endl;
+            cout << "|     6) Go Back to Main Menu                      |" << endl;
 			cout << "|    Option: ";
-			choice = checkBoundaries(1, 2);
+			choice = checkBoundaries(1, 6);
 
 			switch (choice) {
-			case 1:
-				cout << endl;
-				companyName.maintenanceList();
-				break;
+                case 1:
+                    cout << endl;
+                    companyName.maintenanceList();
+                    break;
 
-		
-			}
+                case 2:
+                    cout << endl;
+                    break;
+
+                case 3:
+                    cout << endl;
+                    break;
+
+                case 4:
+                    cout << endl;
+                    break;
+
+                case 5:
+                    cout << endl;
+                    break;
+
+            }
 
 		}
 		catch (OperationCanceled &e) {
@@ -371,9 +397,56 @@ void maintenanceMenu(Company &companyName) {
 	}
 }
 
+void technicianMenu (Company &companyName) {
+    int choice = 0;
+
+    while (choice != 6) {
+        try {
+            cout << "____________________________________________________" << endl;
+            cout << "|                   MANAGE MAINTENANCE             |" << endl;
+            cout << "|                                                  |" << endl;
+            cout << "|        Type your option:                         |" << endl;
+            cout << "|     1) Add technician                      |" << endl;
+            cout << "|     2) Delete technician                     |" << endl;
+            cout << "|     3) Print technician's information                       |" << endl;
+            cout << "|     4) Print all technicians of a model                   |" << endl;
+            cout << "|     5) Print all technicians                     |" << endl;
+            cout << "|     6) Go Back to Main Menu                      |" << endl;
+            cout << "|    Option: ";
+            choice = checkBoundaries(1, 6);
+
+            switch (choice) {
+                case 1:
+                    cout << endl;
+                    companyName.maintenanceList();
+                    break;
+
+                case 2:
+                    cout << endl;
+                    break;
+
+                case 3:
+                    cout << endl;
+                    break;
+
+                case 4:
+                    cout << endl;
+                    break;
+
+                case 5:
+                    cout << endl;
+                    break;
+
+            }
+
+        }
+        catch (OperationCanceled &e) {
+            cout << "Operation was canceled\n";
+        }
+    }
+}
+
 /*             MANAGE PLANES        */
-
-
 
 void addPlane(Company &companyName) {
 	int places;
