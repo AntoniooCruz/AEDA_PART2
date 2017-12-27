@@ -18,6 +18,7 @@
 using namespace std;
 
 class PassengerWCard;
+class Technician;
 
 struct SortOrder
 {
@@ -247,9 +248,6 @@ public:
 	 * @return A pointer to the flight
 	 */
     Flight * searchFlight (unsigned int FlightId);
-	
-
-    void addTechnician (Technician &t);
 
 	/**
 	* @brief update hash table with new information

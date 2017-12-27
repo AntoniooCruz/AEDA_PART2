@@ -1619,7 +1619,7 @@ ostream& operator<< (ostream &os, const PassengerWCard &p) {
 
 int main()
 {
-	Company ryanair("passengers.txt", "planes.txt","reserv.txt");
+	Company ryanair("passengers.txt", "planes.txt","reserv.txt", "techs.txt");
 	ryanair.updateHashTable();
 	mainMenu(ryanair);
 	return 0;
