@@ -3,6 +3,8 @@
 #include "Passenger.h"
 #include "Order.cpp"
 
+
+
 Company::Company() {}
 
 Company::Company(string passengersFile, string planesFile, string reservFile) {
@@ -81,6 +83,8 @@ void Company::openPassFile () {
             }
 
 			PassengerWCard * ptrP = new PassengerWCard(id, name, job, anniversary, newPass);
+
+			ptrP->setPhoneNumber(phoneNumber);
 
             PassengerCards.push_back(ptrP);
 
@@ -165,7 +169,7 @@ void Company::closePassFile() {
 
     for (int i = 0; i < PassengerCards.size(); i++) {
         saveData << PassengerCards[i]->getId() << " ; " << PassengerCards[i]->getName() + " ; " + PassengerCards[i]->getDateBirth()
-                    + " ; " + PassengerCards[i]->getJob() + " ; " + PassengerCards[i]->getLastTicketBought().getDate() + " ; ";
+                    + " ; " + PassengerCards[i]->getJob() + " ; " + PassengerCards[i]->getPhoneNumber() + " ; " + PassengerCards[i]->getLastTicketBought().getDate() + " ; ";
 
         vector <flightsYear> flightsPerYear = PassengerCards.at(i)->getFlightsPerYear();
 
@@ -557,22 +561,73 @@ void Company::addTechnician(Technician &t) {
 
 void Company::updateHashTable()
 {
-	DateFlight nowR = DateFlight::getNow();
+	DateFlight nowTmp = DateFlight::getNow();
+	Date nowDate (nowTmp.getYear(), nowTmp.getMonth(), nowTmp.getDay());
 	for (size_t i = 0; i < PassengerCards.size(); i++) {
-		DateFlight LTB(PassengerCards[i]->getLastTicketBought().getYear(), PassengerCards[i]->getLastTicketBought().getMonth(), PassengerCards[i]->getLastTicketBought().getDay(), 0, 0);
-		if (nowR - LTB  > 525600) {
-			addToHashTable(*PassengerCards[i]);
+		if (nowDate - PassengerCards[i]->getLastTicketBought()  > 8760) {
+			PassengerWCardPtr p1;
+			p1.PassengerWCard = PassengerCards[i];
+			addHT(p1);
 		}
 	}
 }
 
-bool Company::addToHashTable(PassengerWCard p1)
+bool Company::addHT(PassengerWCardPtr p1)
 {
 	pair<iteratorH, bool> res = inactivePassengers.insert(p1);
-	if (res.second == false) { //não inseriu, já existia  ... VAMOS SO ATUALIZAR O MEMBRO DADO lastTicketBought
-		iteratorH it = res.first;		inactivePassengers.erase(it);
+	if (res.second == false) { //não inseriu, já existia  ... tiramos e pomos de novo assim aparece com todos os dados atualizados
+		iteratorH it = res.first;
+		inactivePassengers.erase(it);
 		inactivePassengers.insert(p1);
 		return false;
 	}
 	return true;
+}
+
+bool Company::addToHashTable(PassengerWCardPtr p1)
+{
+	PassengerWCard* tmp = p1.PassengerWCard;
+	DateFlight nowTmp = DateFlight::getNow();
+	Date nowDate(nowTmp.getYear(), nowTmp.getMonth(), nowTmp.getDay());
+	if (nowDate - tmp->getLastTicketBought() > 8760) {
+		pair<iteratorH, bool> res = inactivePassengers.insert(p1);
+		if (res.second == false) { //não inseriu, já existia  ... tiramos e pomos de novo assim aparece com todos os dados atualizados
+			iteratorH it = res.first;
+			inactivePassengers.erase(it);
+			inactivePassengers.insert(p1);
+			return false;
+		}
+		return true;
+	}
+	return false;
+}
+
+bool Company::addToHashTable(PassengerWCard* p1)
+{
+	PassengerWCardPtr tmpPtr;
+	tmpPtr.PassengerWCard = p1;
+	return addToHashTable(tmpPtr);
+}
+
+tabH Company::getInactivePassengers() const
+{
+	return inactivePassengers;
+}
+
+void Company::printInactivePassengers() const
+{
+	iteratorH it = inactivePassengers.begin();
+
+
+	while (it != inactivePassengers.end()) {
+		PassengerWCardPtr tmpPtr = *it;
+		PassengerWCard* tmp = tmpPtr.PassengerWCard;
+		cout << *tmp << endl;
+		it++;
+	}
+}
+
+unsigned int PassengerWCardPtr::getId() const
+{
+	return this->PassengerWCard->getId();
 }

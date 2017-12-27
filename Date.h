@@ -103,6 +103,13 @@ public:
     */
     static bool past (unsigned int year, unsigned int month, unsigned int day);
 
+	/**
+	* @brief Operator - overload to calculate the difference between to dates
+	* @param d2 The date to subtract from this date
+	* @return Number of hours that 2 date differ from one another
+	*/
+	float operator-(const Date &d2) const;
+
     /* operator overloading */
     /**
      * @brief Operator << overload to print a date: year/month/day
@@ -205,7 +212,7 @@ public:
     /**
      * @brief Operator - overload to calculate the difference between to dates
      * @param d2 The date to subtract from this date
-     * @return Number of minutes that 2 date differ from one another
+     * @return Number of hours that 2 date differ from one another
      */
     float operator-(const DateFlight &d2) const;
 

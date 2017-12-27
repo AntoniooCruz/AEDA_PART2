@@ -3,18 +3,21 @@
 
 
 #include <iostream>
+#include "Passenger.h"
 #include <vector>
 #include <fstream>
 #include <set>
 #include <queue>
-#include "Passenger.h"
 #include "Plane.h"
 #include "Exceptions.cpp"
 #include "tecnico.h"
+#include "Header.h"
 #include <unordered_set>
 
 
 using namespace std;
+
+class PassengerWCard;
 
 struct SortOrder
 {
@@ -27,29 +30,38 @@ struct SortOrder
 	}
 };
 
-class PassengerWCard;
+
+
 
 /*
  * @class Company Class that represents a airline company where are stored all its planes and registered passengers
  */
 
+
+struct PassengerWCardPtr {
+	PassengerWCard* PassengerWCard;
+	unsigned int getId() const;
+};
+
 struct hPWC {
-	int operator() (const PassengerWCard& p1) const
+	
+	int operator() (const PassengerWCardPtr &p1) const
 	{
-		int i = p1.getId();
-		return i;
+		return p1.getId();
 	}
-};
 
-struct eqPWC {
-	bool operator() (const PassengerWCard& p1, const PassengerWCard& p2) const
+	bool operator() (const PassengerWCardPtr &p1, const PassengerWCardPtr &p2) const
 	{
-		return p1.getId() == p2.getId();
+		unsigned int id1 = p1.getId();
+		unsigned int id2 = p2.getId();
+		return id1 == id2;
 	}
-};
 
-typedef unordered_set<PassengerWCard, hPWC, eqPWC>::iterator iteratorH;
-typedef unordered_set<PassengerWCard, hPWC, eqPWC> tabH;
+}; 
+
+
+typedef unordered_set<PassengerWCardPtr, hPWC, hPWC>::iterator iteratorH;
+typedef unordered_set<PassengerWCardPtr, hPWC, hPWC> tabH;
 
 class Company
 {
@@ -90,6 +102,7 @@ public:
      * @throw ErrorOpeningFile If there's an error opening the file
      */
     void openPassFile ();
+
 
     /*
      * @brief Opens the file with the information regarding the planes
@@ -218,6 +231,7 @@ public:
 	 */
     Flight * searchFlight (unsigned int FlightId);
 	
+
     void addTechnician (Technician &t);
 
 	/**
@@ -225,7 +239,33 @@ public:
 	*/
 	void updateHashTable();
 
-	bool addToHashTable(PassengerWCard p1);
+	/**
+	* @brief update hash table with new information
+	* @return false if already exist ... if false -> delete and add with the new info
+	*/
+	bool addHT(PassengerWCardPtr p1);
+
+	/**
+	* @brief add to hash table, check the date
+	* @return false if already exist ... if false -> delete and add with the new info 
+	*/
+	bool addToHashTable(PassengerWCardPtr p1);
+
+	/**
+	* @brief add to hash table, check the date
+	* @return false if already exist ... if false -> delete and add with the new info
+	*/
+	bool addToHashTable(PassengerWCard* p1);
+
+	/**
+	* @return inactivePassengers
+	*/
+	tabH getInactivePassengers() const;
+
+	/**
+	* @brief print the hash table
+	*/
+	void printInactivePassengers() const;
 
 };
 

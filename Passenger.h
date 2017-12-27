@@ -13,6 +13,7 @@
 
 using namespace std;
 
+
 class Reservation;
 
 /*
@@ -197,5 +198,7 @@ public:
 	*/
 	friend ostream& operator<< (ostream &os, const PassengerWCard &p);
 };
+
+
 
 #endif //AEDA_PASSENGER_H

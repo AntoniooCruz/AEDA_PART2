@@ -118,6 +118,16 @@ bool Date::past(unsigned int year, unsigned int month, unsigned int day) {
     return (year < now->tm_year + 1900);
 }
 
+float Date::operator-(const Date & d2) const
+{
+	int Y, m, d;
+	Y = getYear() - d2.getYear();
+	m = getMonth() - d2.getMonth();
+	d = getDay() - d2.getDay();
+
+	return Y * 8640 + 720 * m + d * 24;
+}
+
 ostream& operator<< (ostream &os, const Date &d) {
     os << d.getDate();
 
