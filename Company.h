@@ -11,7 +11,6 @@
 #include "Plane.h"
 #include "Exceptions.cpp"
 #include "tecnico.h"
-#include "Header.h"
 #include <unordered_set>
 
 
