@@ -3,16 +3,21 @@
 
 
 #include <iostream>
+#include "Passenger.h"
 #include <vector>
 #include <fstream>
 #include <set>
 #include <queue>
-#include "Passenger.h"
 #include "Plane.h"
 #include "Exceptions.cpp"
 #include "tecnico.h"
+#include "Header.h"
+#include <unordered_set>
+
 
 using namespace std;
+
+class PassengerWCard;
 
 struct SortOrder
 {
@@ -25,12 +30,38 @@ struct SortOrder
 	}
 };
 
-class Technician;
-class PassengerWCard;
+
+
 
 /*
  * @class Company Class that represents a airline company where are stored all its planes, registered passengers, maintenances and technicians
  */
+
+
+struct PassengerWCardPtr {
+	PassengerWCard* PassengerWCard;
+	unsigned int getId() const;
+};
+
+struct hPWC {
+	
+	int operator() (const PassengerWCardPtr &p1) const
+	{
+		return p1.getId();
+	}
+
+	bool operator() (const PassengerWCardPtr &p1, const PassengerWCardPtr &p2) const
+	{
+		unsigned int id1 = p1.getId();
+		unsigned int id2 = p2.getId();
+		return id1 == id2;
+	}
+
+}; 
+
+
+typedef unordered_set<PassengerWCardPtr, hPWC, hPWC>::iterator iteratorH;
+typedef unordered_set<PassengerWCardPtr, hPWC, hPWC> tabH;
 
 class Company
 {
@@ -40,6 +71,7 @@ private:
     priority_queue <Technician> technicians;            /** < @brief All of the technicians of the company ordered according to their availability*/
     string planesFile, passFile, reservFile, techFile;	/** < @brief Names of the files where the information is imported from */
 	set<Plane*, SortOrder> maintenance;
+	tabH inactivePassengers;
 
 public:
 
@@ -78,7 +110,8 @@ public:
      */
     void openPassFile ();
 
-    /**
+
+    /*
      * @brief Opens the file with the information regarding the planes
      * Uses the member value planesFile as the name of the file
      * @throw ErrorOpeningFile If there's an error opening the file
@@ -214,6 +247,42 @@ public:
 	 * @return A pointer to the flight
 	 */
     Flight * searchFlight (unsigned int FlightId);
+	
+
+    void addTechnician (Technician &t);
+
+	/**
+	* @brief update hash table with new information
+	*/
+	void updateHashTable();
+
+	/**
+	* @brief update hash table with new information
+	* @return false if already exist ... if false -> delete and add with the new info
+	*/
+	bool addHT(PassengerWCardPtr p1);
+
+	/**
+	* @brief add to hash table, check the date
+	* @return false if already exist ... if false -> delete and add with the new info 
+	*/
+	bool addToHashTable(PassengerWCardPtr p1);
+
+	/**
+	* @brief add to hash table, check the date
+	* @return false if already exist ... if false -> delete and add with the new info
+	*/
+	bool addToHashTable(PassengerWCard* p1);
+
+	/**
+	* @return inactivePassengers
+	*/
+	tabH getInactivePassengers() const;
+
+	/**
+	* @brief print the hash table
+	*/
+	void printInactivePassengers() const;
 
     /**
      * @brief Adds a technician to the company inserting him in the queue according to his priority

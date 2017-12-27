@@ -70,7 +70,7 @@ void waitToContinue () {
 
 void mainMenu(Company &companyName) {
 	int choice = 0;
-
+	
 	while (choice != 7) {
 		cout << "____________________________________________________" << endl;
 		cout << "|                  MAIN MENU                       |" << endl;
@@ -243,21 +243,23 @@ void flightsMenu(Company &companyName) {
 void passengersMenu(Company &companyName) {
 	int choice = 0;
 
-	while (choice != 6) {
+	while (choice != 8) {
         try {
             cout << "____________________________________________________" << endl;
             cout << "|              MANAGE PASSENGERS                   |" << endl;
             cout << "|                                                  |" << endl;
             cout << "|        Type your option:                         |" << endl;
             cout << "|     1) Add Passenger                             |" << endl;
-            cout << "|     2) Delete Passenger                          |" << endl;
-            cout << "|     3) Print Passenger Reservations              |" << endl;
-            cout << "|     4) Print Passenger Informations              |" << endl;
-            cout << "|     5) Print All Passengers                      |" << endl;
-            cout << "|     6) Back to Main Menu                         |" << endl;
-            cout << "|    Option: ";
+			cout << "|     2) Change Phone Number                       |" << endl;
+			cout << "|     3) Delete Passenger                          |" << endl;
+            cout << "|     4) Print Passenger Reservations              |" << endl;
+            cout << "|     5) Print Passenger Informations              |" << endl;
+			cout << "|     6) Print Inactive Passengers                 |" << endl;
+			cout << "|     7) Print All Passengers                      |" << endl;
+			cout << "|     8) Back to Main Menu                         |" << endl;
+			cout << "|    Option: ";
 
-            choice = checkBoundaries(1, 6);
+            choice = checkBoundaries(1, 8);
 
 
             switch (choice) {
@@ -266,25 +268,38 @@ void passengersMenu(Company &companyName) {
                     addPassenger(companyName);
                     break;
 
-                case 2:
+				case 2:
+					cout << endl << endl;
+					changePhoneNumber(companyName);
+					break;
+
+                case 3:
                     cout << endl << endl;
                     deletePassenger(companyName);
                     break;
 
-                case 3:
+                case 4:
                     cout << endl << endl;
                     printPassengerReservations(companyName);
                     break;
 
-                case 4:
+				case 5:
+					cout << endl << endl;
+					printPassengerInformation(companyName);
+					break;
+
+                case 6:
                     cout << endl << endl;
-                    printPassengerInformation(companyName);
+					companyName.printInactivePassengers();
+					waitToContinue();
                     break;
 
-                case 5:
+                case 7:
                     cout << endl << endl;
                     printAllPassengers(companyName);
                     break;
+
+					
             }
         }
         catch (OperationCanceled &e) {
@@ -961,6 +976,7 @@ void addPassenger(Company &companyName) {
 
 	PassengerWCard * adding = new PassengerWCard(name, job, anniversary);
 	companyName.addPassenger(adding);
+	companyName.addToHashTable(adding);
 
 	cout << "Passenger added sucessfully! \n"
 		<< "Passenger information: \n"
@@ -969,7 +985,74 @@ void addPassenger(Company &companyName) {
     waitToContinue ();
 }
 
-void deletePassenger(Company &companyName) {
+void changePhoneNumber(Company & companyName)
+{
+	int id, i;
+	bool invalidInput;
+
+	do {
+
+		cout << "\nType 0 to cancel the operation\n"
+			<< "Passenger id: ";
+
+		id = checkBoundaries(0);
+		invalidInput = false;
+
+		if (id != 0) {
+			try {
+				PassengerWCard * change = companyName.searchPassenger(id, i);
+				cout << endl << "Passenger Information\n"
+					<< *change << endl << endl;
+				cout << "\nType 0 to cancel the operation\n"
+					<< "new Phone Number: ";
+				string phoneNumber;
+				cin >> phoneNumber;
+				if (phoneNumber == "0") {
+					cout << "Operation canceled\n\n\n";
+					continue;
+				}
+
+				bool cONT = false;
+
+				for (size_t i = 0; i < companyName.getRegPassengers().size(); i++) {
+					if (companyName.getRegPassengers()[i]->getPhoneNumber() == phoneNumber) {
+						cout << "\nSomeone already has that number! Try again: \n";
+						invalidInput = true;
+						cONT = true;
+						break;
+					}
+				}
+				
+				if (cONT) continue;
+
+				if (!change->setPhoneNumber(phoneNumber)) {
+					cout << "\nWrong phone number! Try again: \n";
+					invalidInput = true;
+					continue;
+				}
+				cout << "\nOperation successful!\n\n";
+				cout << "Passenger Information\n"
+					<< *change;
+
+			}
+			catch (NoSuch &e) {
+				cout << "There isn't a " << e.getType() << " with that id, " << e.getId() << endl
+					<< "Try again:\n\n ";
+				invalidInput = true;
+			}
+		}
+		else {
+			cout << "Operation canceled\n\n\n";
+			invalidInput = false;
+		}
+	} while (invalidInput);
+
+	waitToContinue();
+	
+}
+
+void deletePassenger(Company &companyName)
+{
 	int id;
 	bool invalidInput;
 
@@ -1000,7 +1083,7 @@ void deletePassenger(Company &companyName) {
 		}
 	} while (invalidInput);
 
-    waitToContinue ();
+	waitToContinue();
 }
 
 void printPassengerReservations(Company &companyName) {
@@ -1208,6 +1291,14 @@ void addReservationToPass(Company &companyName) {
 
 	fc1->addReservation(adding);
 
+	DateFlight nowR = DateFlight::getNow();
+
+	Date nowRDate(nowR.getYear(), nowR.getMonth(), nowR.getDay());
+
+	pc1->setLastTicketBought(nowRDate);
+
+	companyName.addToHashTable(pc1);
+
     waitToContinue ();
 }
 
@@ -1245,6 +1336,8 @@ void addReservationAndNewPass(Company &companyName) {
 	Date anniversary(year, month, day);
 
 	Passenger * p1 = new Passenger(name, anniversary);
+
+	PassengerWCard * pc1 = dynamic_cast<PassengerWCard*> (p1);
 
 	vector<vector<Flight*> > airportFlights = companyName.getAirportsFlights();
 
@@ -1310,6 +1403,12 @@ void addReservationAndNewPass(Company &companyName) {
 
 	fc1->addReservation(adding);
 
+	DateFlight nowR = DateFlight::getNow();
+
+	Date nowRDate(nowR.getYear(), nowR.getMonth(), nowR.getDay());
+
+	pc1->setLastTicketBought(nowRDate);
+
     waitToContinue ();
 }
 
@@ -1344,6 +1443,8 @@ void deleteReservation(Company &companyName) {
 		{
 			cout << "Reservation removed successfully \n";
 		}
+
+		//TODO: tratar da hash table aqui (nao sei ainda o que fazer aqui...)
 
     waitToContinue ();
 }
@@ -1507,6 +1608,8 @@ ostream& operator<< (ostream &os, const PassengerWCard &p) {
 		<< "Name : " << p.getName() << endl
 		<< "Job : " << p.job << endl
 		<< "Date of Birth: " << p.getDateBirth() << endl
+		<< "Phone Number: " << p.getPhoneNumber() << endl
+		<< "Last Ticket Bought: " << p.getLastTicketBought().getDate() << endl
 		<< "Average Flights per year: " << p.getAverageFlight() << endl;
 
 
@@ -1516,7 +1619,8 @@ ostream& operator<< (ostream &os, const PassengerWCard &p) {
 
 int main()
 {
-	Company ryanair("/Users/carqueja/Repositories/AEDA_PART2/passengers.txt", "/Users/carqueja/Repositories/AEDA_PART2/planes.txt","/Users/carqueja/Repositories/AEDA_PART2/reserv.txt", "/Users/carqueja/Repositories/AEDA_PART2/techs.txt");
+	Company ryanair("passengers.txt", "planes.txt","reserv.txt");
+	ryanair.updateHashTable();
 	mainMenu(ryanair);
 	return 0;
 }

@@ -9,8 +9,10 @@
 #include <sstream>
 #include "Reservation.h"
 #include "Date.h"
+#include <unordered_set>
 
 using namespace std;
+
 
 class Reservation;
 
@@ -24,6 +26,7 @@ private:
 	string name;								/** < @brief Name of the passenger */
 	Date anniversary;							/** < @brief The date of birth of the passenger*/
 	vector<Reservation *> reserv;				/** < @brief A vector of pointers to the reservations the passenger made */
+
 
 public:
 	/**
@@ -91,7 +94,7 @@ public:
 	* @return true if they have the same id
 	*/
 	bool operator== (const Passenger &p) const;
-
+	
 
 };
 
@@ -108,9 +111,11 @@ class PassengerWCard : public Passenger
 {
 private:
 	unsigned int id;								/** < @brief Id of the passenger in the company */
+	string phoneNumber;								/** < @brief phone number of the passenger in the company */
 	vector <flightsYear> averageFlights;			
 	float flightYear;								/** < @brief Average flights per year */
 	string job;										/** < @brief Job of the passenger */
+	Date lastTicketBought;							/** < @brief The date of the last ticket bought*/
 
 public:
 	
@@ -125,6 +130,10 @@ public:
 	* @return A string with the passengers job
 	*/
 	string getJob() const;
+	/**
+	* @return LastTicketBought
+	*/
+	Date getLastTicketBought() const;
 	/**
 	* @return Average flights per year of the passenger
 	*/
@@ -150,10 +159,24 @@ public:
 	*/
 	void setId (unsigned int id);
 	/**
+	* @brief change the Passengers phone number
+	* @param new phone number
+	* @return false if the new number has more or less than 9 digits
+	*/
+	bool setPhoneNumber(string pn);
+	/**
+	* @brief changes LastTicketBought
+	*/
+	void setLastTicketBought(Date lastTicketBought);
+	/**
 	* @brief Returns a string used to see if the Passenger is a registred one or not
 	* @return A string "Card" or "noCard"
 	*/
 	string getType() const;
+	/**
+	* @return string with phone number
+	*/
+	string getPhoneNumber() const;
 	/**
 	* @brief Adds the reservation to the passenger
 	* @param r A pointer to the reservation of the passenger
@@ -166,8 +189,7 @@ public:
 	*/
 	Reservation deleteReserv(string seat, unsigned int idF);
 
-	bool operator< (const PassengerWCard &p) const;
-
+    bool operator< (const PassengerWCard &p) const;
 	/**
 	* @brief Operator << overload to print the information of a PassengerWCard
 	* @param os
@@ -176,5 +198,7 @@ public:
 	*/
 	friend ostream& operator<< (ostream &os, const PassengerWCard &p);
 };
+
+
 
 #endif //AEDA_PASSENGER_H

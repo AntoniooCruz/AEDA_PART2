@@ -3,6 +3,8 @@
 #include "Passenger.h"
 #include "Order.cpp"
 
+
+
 Company::Company() {}
 
 Company::Company(string passengersFile, string planesFile, string reservFile, string techFile) {
@@ -42,7 +44,9 @@ void Company::openPassFile () {
     string textLine, name, job;
     char aux;
     unsigned int year, month, day, id, flight, year2 = 0;
+	unsigned int LTByear, LTBmonth, LTBday;
     string nrFlights;
+	string phoneNumber;
 
     infich.open(passFile);
 
@@ -64,6 +68,10 @@ void Company::openPassFile () {
 
             vector <flightsYear> newPass;
 
+			cardStream >> phoneNumber >> aux;
+
+			cardStream >> LTByear >> aux >> LTBmonth >> aux >> LTBday >> aux;
+
             while (! cardStream.eof()){
 
                 cardStream >> year2 >> aux >> flight >> aux;
@@ -77,7 +85,15 @@ void Company::openPassFile () {
 
             }
 
-            PassengerCards.push_back(new PassengerWCard (id, name, job, anniversary, newPass));
+			PassengerWCard * ptrP = new PassengerWCard(id, name, job, anniversary, newPass);
+
+			ptrP->setPhoneNumber(phoneNumber);
+
+            PassengerCards.push_back(ptrP);
+
+			Date Date (LTByear, LTBmonth, LTBday);
+
+			ptrP->setLastTicketBought(Date);
 		
         }
     } else {
@@ -204,7 +220,7 @@ void Company::closePassFile() {
 
     for (int i = 0; i < PassengerCards.size(); i++) {
         saveData << PassengerCards[i]->getId() << " ; " << PassengerCards[i]->getName() + " ; " + PassengerCards[i]->getDateBirth()
-                    + " ; " + PassengerCards[i]->getJob() + " ; ";
+                    + " ; " + PassengerCards[i]->getJob() + " ; " + PassengerCards[i]->getPhoneNumber() + " ; " + PassengerCards[i]->getLastTicketBought().getDate() + " ; ";
 
         vector <flightsYear> flightsPerYear = PassengerCards.at(i)->getFlightsPerYear();
 
@@ -709,4 +725,76 @@ void Company::printAllTechnicians() {
         cout << temporary.top() << endl << endl;
         temporary.pop();
     }
+}
+void Company::updateHashTable()
+{
+	DateFlight nowTmp = DateFlight::getNow();
+	Date nowDate (nowTmp.getYear(), nowTmp.getMonth(), nowTmp.getDay());
+	for (size_t i = 0; i < PassengerCards.size(); i++) {
+		if (nowDate - PassengerCards[i]->getLastTicketBought()  > 8760) {
+			PassengerWCardPtr p1;
+			p1.PassengerWCard = PassengerCards[i];
+			addHT(p1);
+		}
+	}
+}
+
+bool Company::addHT(PassengerWCardPtr p1)
+{
+	pair<iteratorH, bool> res = inactivePassengers.insert(p1);
+	if (res.second == false) { //n�o inseriu, j� existia  ... tiramos e pomos de novo assim aparece com todos os dados atualizados
+		iteratorH it = res.first;
+		inactivePassengers.erase(it);
+		inactivePassengers.insert(p1);
+		return false;
+	}
+	return true;
+}
+
+bool Company::addToHashTable(PassengerWCardPtr p1)
+{
+	PassengerWCard* tmp = p1.PassengerWCard;
+	DateFlight nowTmp = DateFlight::getNow();
+	Date nowDate(nowTmp.getYear(), nowTmp.getMonth(), nowTmp.getDay());
+	if (nowDate - tmp->getLastTicketBought() > 8760) {
+		pair<iteratorH, bool> res = inactivePassengers.insert(p1);
+		if (res.second == false) { //n�o inseriu, j� existia  ... tiramos e pomos de novo assim aparece com todos os dados atualizados
+			iteratorH it = res.first;
+			inactivePassengers.erase(it);
+			inactivePassengers.insert(p1);
+			return false;
+		}
+		return true;
+	}
+	return false;
+}
+
+bool Company::addToHashTable(PassengerWCard* p1)
+{
+	PassengerWCardPtr tmpPtr;
+	tmpPtr.PassengerWCard = p1;
+	return addToHashTable(tmpPtr);
+}
+
+tabH Company::getInactivePassengers() const
+{
+	return inactivePassengers;
+}
+
+void Company::printInactivePassengers() const
+{
+	iteratorH it = inactivePassengers.begin();
+
+
+	while (it != inactivePassengers.end()) {
+		PassengerWCardPtr tmpPtr = *it;
+		PassengerWCard* tmp = tmpPtr.PassengerWCard;
+		cout << *tmp << endl;
+		it++;
+	}
+}
+
+unsigned int PassengerWCardPtr::getId() const
+{
+	return this->PassengerWCard->getId();
 }
