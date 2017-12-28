@@ -250,8 +250,11 @@ void Company::closePlanesFile() {
     }
 
     for (int i = 0; i < planes.size(); i++) {
+        // calculates how many days until the next inspection
+        int nextInsp =  (planes[i]->getNextMaintenance() - Date::getNow())/24;
+
         saveData << planes[i]->getId() << " ; " << planes[i]->getNrPlaces();
-		saveData << " , " << planes[i]->getModel() << " , " << planes[i]->getMaintenanceRate() << " , " << planes[i]->getNextMaintenance();
+		saveData << " , " << planes[i]->getModel() << " , " << planes[i]->getMaintenanceRate() << " , " << to_string(nextInsp);
 
         temp = planes[i]->getFlights();
 
@@ -726,8 +729,8 @@ void Company::printAllTechnicians() {
         temporary.pop();
     }
 }
-void Company::updateHashTable()
-{
+
+void Company::updateHashTable() {
 	DateFlight nowTmp = DateFlight::getNow();
 	Date nowDate (nowTmp.getYear(), nowTmp.getMonth(), nowTmp.getDay());
 	for (size_t i = 0; i < PassengerCards.size(); i++) {
@@ -739,8 +742,7 @@ void Company::updateHashTable()
 	}
 }
 
-bool Company::addHT(PassengerWCardPtr p1)
-{
+bool Company::addHT(PassengerWCardPtr p1) {
 	pair<iteratorH, bool> res = inactivePassengers.insert(p1);
 	if (res.second == false) { //n�o inseriu, j� existia  ... tiramos e pomos de novo assim aparece com todos os dados atualizados
 		iteratorH it = res.first;
@@ -751,8 +753,7 @@ bool Company::addHT(PassengerWCardPtr p1)
 	return true;
 }
 
-bool Company::addToHashTable(PassengerWCardPtr p1)
-{
+bool Company::addToHashTable(PassengerWCardPtr p1){
 	PassengerWCard* tmp = p1.PassengerWCard;
 	DateFlight nowTmp = DateFlight::getNow();
 	Date nowDate(nowTmp.getYear(), nowTmp.getMonth(), nowTmp.getDay());
@@ -769,20 +770,17 @@ bool Company::addToHashTable(PassengerWCardPtr p1)
 	return false;
 }
 
-bool Company::addToHashTable(PassengerWCard* p1)
-{
+bool Company::addToHashTable(PassengerWCard* p1){
 	PassengerWCardPtr tmpPtr;
 	tmpPtr.PassengerWCard = p1;
 	return addToHashTable(tmpPtr);
 }
 
-tabH Company::getInactivePassengers() const
-{
+tabH Company::getInactivePassengers() const {
 	return inactivePassengers;
 }
 
-void Company::printInactivePassengers() const
-{
+void Company::printInactivePassengers() const {
 	iteratorH it = inactivePassengers.begin();
 
 
@@ -794,7 +792,6 @@ void Company::printInactivePassengers() const
 	}
 }
 
-unsigned int PassengerWCardPtr::getId() const
-{
+unsigned int PassengerWCardPtr::getId() const {
 	return this->PassengerWCard->getId();
 }

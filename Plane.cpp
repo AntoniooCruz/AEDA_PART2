@@ -32,12 +32,10 @@ Plane::Plane (string textLine){
 	unsigned int places, year, month, day, hour, minutes, duration, id,rate, nextInsp;
 	float price;
 
-    planeStream >> id >> aux >> places >> aux >> model >> aux >> rate >> aux >> year >> aux >> month >> aux >> day >> aux;
+    planeStream >> id >> aux >> places >> aux >> model >> aux >> rate >> aux >> nextInsp >> aux;
 	this->model = model;
 	this->maintenanceRate = rate;
-    Date d (year, month, day);
-	this->nextMaintenance = d;
-
+	this->nextMaintenance = Date::getNow() + nextInsp;
 	this->nrPlaces = places;
 	this->id = id;
 
