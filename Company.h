@@ -33,11 +33,6 @@ struct SortOrder
 
 
 
-/*
- * @class Company Class that represents a airline company where are stored all its planes, registered passengers, maintenances and technicians
- */
-
-
 struct PassengerWCardPtr {
 	PassengerWCard* PassengerWCard;
 	unsigned int getId() const;
@@ -62,6 +57,11 @@ struct hPWC {
 
 typedef unordered_set<PassengerWCardPtr, hPWC, hPWC>::iterator iteratorH;
 typedef unordered_set<PassengerWCardPtr, hPWC, hPWC> tabH;
+
+
+/*
+ * @class Company Class that represents a airline company where are stored all its planes, registered passengers, maintenances and technicians
+ */
 
 class Company
 {
@@ -164,9 +164,9 @@ public:
 
 	void insertPlanesInTree();
 
-	void maintenanceList();
+	void maintenanceList() const;
 
-	void maintenanceList(Date &d1);
+	void maintenanceList(const Date &begin, const Date &end) const;
 
     /**
      * @brief Adds a plane to the company. Calculates the id it should have and sets the plane id.

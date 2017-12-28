@@ -224,6 +224,12 @@ void deleteReservation(Company &companyName);
 void printAllReservations (Company &companyName);
 
 /**
+ * @brief Prints all of the scheduled maintenance between 2 dates given by the user
+ * @param companyName The company to which the maintenance belong to
+ */
+void printMaintenancesOnDate (Company &companyName);
+
+/**
  * @brief User's interface to add a technician to the company: user is asked for a name, and the model's the technician is qualified to work with
  * @param companyName The company to which the technician will be added
  */

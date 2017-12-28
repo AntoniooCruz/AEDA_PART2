@@ -557,6 +557,35 @@ void Company::scheduleMaintenance (Plane* p) {
         }
 }
 
+void Company::maintenanceList() const {
+    unsigned int i = 1;
+    for (set<Plane*>::const_iterator it = maintenance.begin(); it != maintenance.end(); it++, i++)
+    {
+        cout << i << ":" << endl;
+        cout << *(*it) <<endl;
+    }
+}
+
+void Company::maintenanceList(const Date &begin, const Date &end) const {
+    unsigned int i = 1;
+    for (set<Plane*>::const_iterator it = maintenance.begin(); it != maintenance.end(); it++) {
+
+        if (begin < (*it)->getNextMaintenance() && (*it)->getNextMaintenance() < end) {
+            cout << i << ":" << endl;
+            cout << *(*it) << endl;
+            i++;
+        }
+        else if (begin == (*it)->getNextMaintenance() || end == (*it)->getNextMaintenance()){
+            cout << i << ":" << endl;
+            cout << *(*it) << endl;
+            i++;
+        }
+        else if ((*it)->getNextMaintenance() < end) {
+            return;
+        }
+    }
+}
+
 
 /*  EDIT PASSENGER */
 
@@ -636,15 +665,6 @@ PassengerWCard * Company::searchPassenger(unsigned int nrid, int &i) {
 
 	throw NoSuchPassenger(nrid);
 
-}
-
-void Company::maintenanceList() {
-	unsigned int i = 1;
-	for (set<Plane*>::iterator it = maintenance.begin(); it != maintenance.end(); it++)
-	{	
-		cout << i << ":" << endl;
-		cout << *(*it) <<endl;
-	}
 }
 
 void Company::insertPlanesInTree() {
