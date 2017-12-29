@@ -144,8 +144,8 @@ bool Date::operator== (const Date &d) const {
     return (getYear() == d.getYear() && getMonth() == d.getMonth() && getDay() == d.getDay());
 }
 
-Date Date::operator+(int add) const {
-    unsigned int eDay = getDay() + add, eMon = getMonth(), eYea = getYear();
+Date Date::operator+(int days) const {
+    unsigned int eDay = getDay() + days, eMon = getMonth(), eYea = getYear();
 
 
             if (eDay > 30) {

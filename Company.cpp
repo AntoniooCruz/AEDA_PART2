@@ -580,10 +580,35 @@ void Company::maintenanceList(const Date &begin, const Date &end) const {
             cout << *(*it) << endl;
             i++;
         }
-        else if ((*it)->getNextMaintenance() < end) {
-            return;
-        }
+      
     }
+}
+void Company::maintenanceList(const unsigned int days) const
+{
+	for (set<Plane*>::const_iterator it = maintenance.begin(); it != maintenance.end(); it++)
+	{
+		if ((*it)->getNextMaintenance() < Date::getNow() + days || (*it)->getNextMaintenance() == Date::getNow() + days)
+		{
+			cout << *(*it) << endl;
+		}
+		else return;
+	}
+}
+bool Company::postponeMaintenance(unsigned int nrid, Date newDate)
+{
+	for (set<Plane*>::const_iterator it = maintenance.begin(); it != maintenance.end(); it++)
+	{
+		if ((*it)->getId() == nrid)
+		{
+			(*it)->changeMaintenance(newDate);
+			Plane* temp = (*it);
+			maintenance.erase(it);
+			maintenance.insert(temp);
+			cout << *temp << endl;
+			return true;
+		}
+	}
+	return false;
 }
 
 

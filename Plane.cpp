@@ -209,7 +209,10 @@ Date Plane::getNextMaintenance() const {
 void Plane::setId(unsigned int id) {
     this->id = id;
 }
-
+void Plane::changeMaintenance(Date newDate)
+{
+	this->nextMaintenance = newDate;
+}
 bool Plane::addFlight(Flight *f) {
 	long i;
 	int id;

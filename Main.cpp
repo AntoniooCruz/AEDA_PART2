@@ -366,7 +366,7 @@ void reservationsMenu(Company &companyName) {
 void maintenanceMenu(Company &companyName) {
 	int choice = 0;
 
-	while (choice != 5) {
+	while (choice != 6) {
 		try {
             cout << "____________________________________________________" << endl;
             cout << "|                   MANAGE MAINTENANCE             |" << endl;
@@ -375,28 +375,35 @@ void maintenanceMenu(Company &companyName) {
             cout << "|     1) Cancel maintenance                        |" << endl;
             cout << "|     2) Postpone maintenance                      |" << endl;
             cout << "|     3) List maintenances to do                   |" << endl;
-            cout << "|     4) List maintenances on a date               |" << endl;
-            cout << "|     5) Go Back to Main Menu                      |" << endl;
+            cout << "|     4) List maintenances to do between 2 dates   |" << endl;
+			cout << "|     5) List maintenances in the next days        |" << endl;
+            cout << "|     6) Go Back to Main Menu                      |" << endl;
             cout << "|    Option: ";
-            choice = checkBoundaries(1, 5);
+            choice = checkBoundaries(1, 6);
 
 			switch (choice) {
                 case 1:
                     cout << endl;
-                    companyName.maintenanceList();
                     break;
 
                 case 2:
                     cout << endl;
+					postponeMaintenance(companyName);
                     break;
 
                 case 3:
                     cout << endl;
+					companyName.maintenanceList();
                     break;
 
                 case 4:
                     cout << endl;
+					printMaintenancesOnDate(companyName);
                     break;
+				case 5:
+					cout << endl;
+					printMaintenancesNextDays(companyName);
+					break;
 
             }
 
@@ -1599,7 +1606,126 @@ void printTechnician (Company &companyName) {
 		}
 	}
 }
+/*       MANAGE MAINTENANCE       */
+void printMaintenancesOnDate(Company &companyName)
+{
+	int days;
+	bool invalDate;
+	string  dateStr;
+	string date2Str;
+	cout << "\nType 0 to cancel the operation\n";
+	cin.ignore();
+	do {
+		invalDate = false;
 
+		cout << "List maintenances to do from (Insert date year/month/day): ";
+		getline(cin, dateStr);
+
+		if (dateStr == "0")
+			throw OperationCanceled();
+
+		try {
+			char aux;
+			int year, month, day;
+
+			istringstream dateStream(dateStr);
+
+			dateStream >> year >> aux >> month >> aux >> day;
+			Date start = Date(year, month, day);
+
+			if (Date::past(year, month, day))
+				throw InvalidDate(year, month, day);
+
+			cout << "to (Insert date year/month/day): ";
+			getline(cin, date2Str);
+
+			if (date2Str == "0")
+				throw OperationCanceled();
+
+			istringstream date2Stream(date2Str);
+
+			date2Stream >> year >> aux >> month >> aux >> day;
+			if (Date::past(year, month, day))
+				throw InvalidDate(day, month, year);
+			Date end = Date(year, month, day);
+			companyName.maintenanceList(start, end);
+
+		}
+		catch (InvalidDate &d) {
+			cout << "Invalid date, " << d.getDate() << ". Try again" << endl;
+			invalDate = true;
+		}
+
+	} while (invalDate);
+}
+
+void postponeMaintenance(Company &companyName)
+{
+	bool invalDate;
+	string  dateStr;
+	int id;
+	bool notfound = true;
+
+	cout << "\nType 0 to cancel the operation\n";
+	cout << "Id: ";
+	
+	id = checkBoundaries(0);
+
+	if (id == 0)
+		throw OperationCanceled();
+
+	cin.ignore();
+	do {
+		invalDate = false;
+
+		cout << "New date for the maintenance (Insert date year/month/day): ";
+		getline(cin, dateStr);
+
+		if (dateStr == "0")
+			throw OperationCanceled();
+
+		try {
+			char aux;
+			int year, month, day;
+
+			istringstream dateStream(dateStr);
+
+			dateStream >> year >> aux >> month >> aux >> day;
+			Date newDate = Date(year, month, day);
+
+			if (Date::past(year, month, day))
+				throw InvalidDate(year, month, day);
+			if (companyName.postponeMaintenance(id, newDate))
+				cout << "Maintenance Postponed with sucess! \n";
+			else
+				cout << "There isnt a Plane with that Id \n";
+
+		}
+		catch (InvalidDate &d) {
+			cout << "Invalid date, " << d.getDate() << ". Try again" << endl;
+			invalDate = true;
+		}
+
+	} while (invalDate);
+}
+
+void printMaintenancesNextDays(Company &companyName)
+{
+	bool invalDate;
+	string  dateStr;
+	int days;
+	bool notfound = true;
+
+	cout << "\nType 0 to cancel the operation\n";
+	cout << "List the maintenances to do in the next (Insert days): ";
+
+	days = checkBoundaries(0);
+
+	if (days == 0)
+		throw OperationCanceled();
+
+	companyName.maintenanceList(days);
+}
 
 /*         OPERATOR OVERLOADING       */
 

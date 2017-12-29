@@ -99,6 +99,8 @@ public:
 	 */
 	void setId (unsigned int id);
 
+	void changeMaintenance(Date newDate);
+
     /* others */
 	/**
 	 * @brief Names the plane's seats according to the number of places

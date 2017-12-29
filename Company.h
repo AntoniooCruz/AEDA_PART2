@@ -168,6 +168,8 @@ public:
 
 	void maintenanceList(const Date &begin, const Date &end) const;
 
+	void maintenanceList(const unsigned int days) const;
+
     /**
      * @brief Adds a plane to the company. Calculates the id it should have and sets the plane id.
      * @param p The plane to be added
@@ -214,6 +216,8 @@ public:
      * @brief
      */
     void scheduleMaintenance (Plane* p);
+
+	bool postponeMaintenance(unsigned int nrid, Date newDate);
 
 
 	/*Edit Passenger vector */

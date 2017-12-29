@@ -117,8 +117,12 @@ public:
 	float operator-(const Date &d2) const;
 
     /* operator overloading */
-
-    Date operator+ (int add) const;
+	/**
+	* @brief Operator + overload to add days to a certain date
+	* @param days The amout of days to add to the date
+	* @return The final date after adding
+	*/
+    Date operator+ (int days) const;
 
     /**
     * @brief Operator < overload to compare 2 dates. One date is smaller than the other if it is previous to the latter.
