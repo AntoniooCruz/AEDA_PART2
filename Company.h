@@ -268,6 +268,11 @@ public:
 	* @return false if already exist ... if false -> delete and add with the new info 
 	*/
 	bool addToHashTable(PassengerWCardPtr p1);
+	/**
+	* @brief delete from hash table
+	* @return false if wasnt deleted
+	*/
+	bool deleteFromHashTable(PassengerWCardPtr p1);
 
 	/**
 	* @brief add to hash table, check the date

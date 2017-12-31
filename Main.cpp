@@ -290,6 +290,7 @@ void passengersMenu(Company &companyName) {
 
                 case 6:
                     cout << endl << endl;
+					cout << "Inactive Passengers:\n\n";
 					companyName.printInactivePassengers();
 					waitToContinue();
                     break;
@@ -978,18 +979,30 @@ void addPassenger(Company &companyName) {
 
 	job = checkString(job);
 
-    if (job == "0")
-        throw OperationCanceled ();
+	if (job == "0")
+		throw OperationCanceled();
+
+	string phoneNumber;
+	cout << "Phone Number: \n";
+	cin >> phoneNumber;
+	
+	if (phoneNumber == "0")
+		throw OperationCanceled();	
 
 	PassengerWCard * adding = new PassengerWCard(name, job, anniversary);
+	if (!adding->setPhoneNumber(phoneNumber)) {
+		cout << "\nWrong phone number! \n";
+		throw OperationCanceled();
+	}
+
 	companyName.addPassenger(adding);
 	companyName.addToHashTable(adding);
 
 	cout << "Passenger added sucessfully! \n"
-		<< "Passenger information: \n"
+		<< "Passenger information: \n\n"
 		<< *adding;
 
-    waitToContinue ();
+	waitToContinue();
 }
 
 void changePhoneNumber(Company & companyName)
@@ -1076,6 +1089,10 @@ void deletePassenger(Company &companyName)
 				cout << "\nThe passenger was deleted successfully!\n\n";
 				cout << "Passenger Information\n"
 					<< *deleting;
+
+				PassengerWCardPtr P;
+				P.PassengerWCard = deleting;
+				companyName.deleteFromHashTable(P);
 
 			}
 			catch (NoSuch &e) {

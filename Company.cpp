@@ -815,6 +815,19 @@ bool Company::addToHashTable(PassengerWCardPtr p1){
 	return false;
 }
 
+bool Company::deleteFromHashTable(PassengerWCardPtr p1)
+{
+	iteratorH it = inactivePassengers.begin();
+
+	while (it != inactivePassengers.end()) {
+
+		PassengerWCardPtr tmpPtr = *it;
+		PassengerWCard* tmp = tmpPtr.PassengerWCard;
+		if (tmp->getId() == p1.getId()) {			inactivePassengers.erase(it);			return true;		}			it++;
+	}
+	return false;
+}
+
 bool Company::addToHashTable(PassengerWCard* p1){
 	PassengerWCardPtr tmpPtr;
 	tmpPtr.PassengerWCard = p1;
