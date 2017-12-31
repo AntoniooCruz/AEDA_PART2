@@ -1325,7 +1325,7 @@ void addReservationToPass(Company &companyName) {
 
     waitToContinue ();
 }
-
+//TODO: falta nesta funcao saber o job nao?
 void addReservationAndNewPass(Company &companyName) {
 	string name, seat;
 	int day, year, month;
@@ -1357,11 +1357,23 @@ void addReservationAndNewPass(Company &companyName) {
     if (year == 0)
         throw OperationCanceled ();
 
+	string phoneNumber;
+	cout << "Phone Number: \n";
+	cin >> phoneNumber;
+
+	if (phoneNumber == "0")
+		throw OperationCanceled();
+
 	Date anniversary(year, month, day);
 
 	Passenger * p1 = new Passenger(name, anniversary);
 
 	PassengerWCard * pc1 = dynamic_cast<PassengerWCard*> (p1);
+
+	if (!pc1->setPhoneNumber(phoneNumber)) {
+		cout << "\nWrong phone number! \n";
+		throw OperationCanceled();
+	}
 
 	vector<vector<Flight*> > airportFlights = companyName.getAirportsFlights();
 
