@@ -70,7 +70,7 @@ private:
     vector<Plane *> planes;							    /** < @brief All of the planes of the airline company */
     priority_queue <Technician> technicians;            /** < @brief All of the technicians of the company ordered according to their availability*/
     string planesFile, passFile, reservFile, techFile;	/** < @brief Names of the files where the information is imported from */
-	set<Plane*, SortOrder> maintenance;
+	set<Plane*, SortOrder> maintenance;					/** < @brief Tree of planes sorted by date of the next inspection */
 	tabH inactivePassengers;
 
 public:
@@ -161,13 +161,24 @@ public:
     static string readComplexString (istringstream &s, char separate);
 
     /* Edit planes' vector */
-
+	/**
+	* @brief Inserts all the planes read from the files in the tree
+	*/
 	void insertPlanesInTree();
-
+	/**
+	* @brief Prints on the screen all the Planes sorted by the date of the next maintenance
+	*/
 	void maintenanceList() const;
-
+	/**
+	* @brief Prints on the screen the Planes sorted by the date of the next maintenance if their dates are between the 2 given
+	* @param begin The starting date
+	* @param begin The ending date
+	*/
 	void maintenanceList(const Date &begin, const Date &end) const;
-
+	/**
+	* @brief Prints on the screen the Planes sorted by the date of the next maintenance, if they need to be inspected in the "days". Ex: If the param is 4 it will show the planes that need to be inspected in the next 4 days
+	* @param begin How many days
+	*/
 	void maintenanceList(const unsigned int days) const;
 
     /**
@@ -225,7 +236,18 @@ public:
      */
     void scheduleMaintenance (Plane* p);
 
+	/**
+	* @brief Changes the maintenance date of a certain plane to a new one
+	* @param nrid Id of the plane to change the date
+	* @param newDate The new date to which the next maintenance will be scheduled to
+	*/
 	bool postponeMaintenance(unsigned int nrid, Date newDate);
+
+	/**
+	* @brief Cancels the current Maintenance adding the required maintenaceRate to the next Maintenance date
+	* @param nrid Id of the plane to change the date
+	*/
+	bool cancelMaintenance(unsigned int nrid);
 
 
 	/*Edit Passenger vector */

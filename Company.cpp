@@ -629,6 +629,22 @@ bool Company::postponeMaintenance(unsigned int nrid, Date newDate){
 	}
 	return false;
 }
+bool Company::cancelMaintenance(unsigned int nrid)
+{
+	for (set<Plane*>::const_iterator it = maintenance.begin(); it != maintenance.end(); it++)
+	{
+		if ((*it)->getId() == nrid)
+		{
+			(*it)->changeMaintenance((*it)->getNextMaintenance() + (*it)->getMaintenanceRate());
+			Plane* temp = (*it);
+			maintenance.erase(it);
+			maintenance.insert(temp);
+			cout << *temp << endl;
+			return true;
+		}
+	}
+	return false;
+}
 
 
 /*  EDIT PASSENGER */

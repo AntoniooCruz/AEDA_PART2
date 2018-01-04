@@ -412,6 +412,7 @@ void maintenanceMenu(Company &companyName) {
 			switch (choice) {
                 case 1:
                     cout << endl;
+					cancelMaintenance(companyName);
                     waitToContinue();
                     break;
 
@@ -430,7 +431,6 @@ void maintenanceMenu(Company &companyName) {
                 case 4:
                     cout << endl;
 					printMaintenancesOnDate(companyName);
-                    printMaintenancesOnDate(companyName);
                     waitToContinue();
                     break;
 				case 5:
@@ -1657,6 +1657,24 @@ void printTechnician (Company &companyName) {
 }
 
 /*       MANAGE MAINTENANCE       */
+void cancelMaintenance(Company &companyName)
+{
+	int id;
+
+	cout << "\nType 0 to cancel the operation\n";
+	cout << "Id: ";
+
+	id = checkBoundaries(0);
+
+	if (id == 0)
+		throw OperationCanceled();
+
+	if (companyName.cancelMaintenance(id))
+		cout << "Maintenance Canceled with sucess! \n";
+	else
+		cout << "There isnt a Plane with that Id \n";
+
+}
 void printMaintenancesOnDate(Company &companyName){
 	int days;
 	bool invalDate;

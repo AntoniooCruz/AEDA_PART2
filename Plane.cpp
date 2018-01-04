@@ -356,6 +356,7 @@ ostream& operator<< (ostream &os, const Plane &p) {
 	os << "Id: " << p.id << endl
 	   << "Model: " << p.model <<endl
 	   << "Date of next inspection: " << p.nextMaintenance << endl
+	   << "Inspection required rate: " << p.getMaintenanceRate() << " days "<< endl
 	   << "Nr of places: " << p.nrPlaces << endl
 	   << "Flights";
 

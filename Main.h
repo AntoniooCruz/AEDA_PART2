@@ -237,6 +237,8 @@ void printMaintenancesOnDate (Company &companyName);
 
 void postponeMaintenance(Company &companyName);
 
+void cancelMaintenance(Company &companyName);
+
 void printMaintenancesNextDays(Company &companyName);
 
 /**
