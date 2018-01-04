@@ -176,7 +176,7 @@ public:
 	*/
 	void maintenanceList(const Date &begin, const Date &end) const;
 	/**
-	* @brief Prints on the screen the Planes sorted by the date of the next maintenance, if they need to be inspected in the "days". Ex: If the param is 4 it will show the planes that need to be inspected in the next 4 days
+	* @brief Prints all of the scheduled maintenance between now and the days given by the user
 	* @param begin How many days
 	*/
 	void maintenanceList(const unsigned int days) const;

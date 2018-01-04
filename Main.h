@@ -234,11 +234,20 @@ void printAllReservations (Company &companyName);
  * @param companyName The company to which the maintenance belong to
  */
 void printMaintenancesOnDate (Company &companyName);
-
+/**
+* @brief User's interface to postpone a Maintenance to a new date
+* @param companyName The company to which the maintenance belong to
+*/
 void postponeMaintenance(Company &companyName);
-
+/**
+* @brief User's interface to cancel a Maintenance
+* @param companyName The company to which the maintenance belong to
+*/
 void cancelMaintenance(Company &companyName);
-
+/**
+* @brief Prints all of the scheduled maintenance between now and the days given by the user
+* @param companyName The company to which the maintenance belong to
+*/
 void printMaintenancesNextDays(Company &companyName);
 
 /**

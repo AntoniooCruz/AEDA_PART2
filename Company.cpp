@@ -621,7 +621,7 @@ bool Company::postponeMaintenance(unsigned int nrid, Date newDate){
 			maintenance.erase(it);
 			maintenance.insert(temp);
             deleteTechMaintenance(nrid);
-            scheduleMaintenance((*it));
+            scheduleMaintenance(temp);
 
 			cout << *temp << endl;
 			return true;
