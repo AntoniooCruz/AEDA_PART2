@@ -199,6 +199,8 @@ public:
 	 */
 	vector <vector <Flight *> > getAirportsFlights ();
 
+    vector <Flight *> getAirportsAllFlights(string airport);
+
     /**
      * @brief Adds a flight to the company, assigning it to the first plane to be free at that flight's time
      * @param f The flight to be added
@@ -312,11 +314,13 @@ public:
      */
     Technician searchTechnician (int id);
 
-
     /**
      * @brief Prints all of the technicians of a company - the ones that are stored in the priority_queue
      */
     void printAllTechnicians ();
+
+
+    void deleteTechMaintenance(int planeId);
 
 };
 

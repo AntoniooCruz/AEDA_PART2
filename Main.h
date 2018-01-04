@@ -146,6 +146,12 @@ void postponeFlight(Company &companyName);
  */
 void printAllFlights(Company &companyName);
 
+/**
+ * @brief User's interface to know all the flights departing from or arriving on an airport
+ * @param companyName The company to which all the flights belong
+ */
+void printFlightsAirport (Company &companyName);
+
 /* MANAGE PASSENGERS */
 
 /**

@@ -61,6 +61,20 @@ void Technician::addPlanesToDo(Plane* p) {
 	planesToDo.push_back(p);
 }
 
+void Technician::deletePlaneToDo(int planeId) {
+    for (auto it = planesToDo.begin(); it != planesToDo.end();){
+        if ((*it)->getId() == planeId){
+            it = planesToDo.erase(it);
+            return;
+        }
+        else {
+            it++;
+        }
+    }
+
+    throw NoSuchPlane (id);
+}
+
 bool Technician::operator< (const Technician &t2) const {
     return getPlanesToDo() > t2.getPlanesToDo();
 }

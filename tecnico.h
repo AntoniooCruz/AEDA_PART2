@@ -70,6 +70,9 @@ public:
 	*/
 	void addPlanesToDo(Plane * p);
 
+
+	void deletePlaneToDo (int planeId);
+
     /**
      * @brief Determines if this technician is bigger or smaller than other, method used to determine a technician's priority
      * @param t The technician to which this is being compared

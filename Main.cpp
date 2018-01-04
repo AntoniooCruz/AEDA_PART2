@@ -60,7 +60,7 @@ float checkFloatBoundaries(float linf) {
 void waitToContinue () {
     string waiting;
 
-    cout << "\nPress any key to continue...";
+    cout << "\nPress any key to continue...\n";
     cin.ignore();
     getline(cin, waiting);
 }
@@ -145,26 +145,31 @@ void planesMenu(Company &companyName) {
                 case 1:
                     cout << endl;
                     addPlane(companyName);
+                    waitToContinue();
                     break;
 
                 case 2:
                     cout << endl << endl;
                     deletePlane(companyName);
+                    waitToContinue();
                     break;
 
                 case 3:
                     cout << endl << endl;
                     printFlights(companyName);
+                    waitToContinue();
                     break;
 
                 case 4:
                     cout << endl << endl;
                     printPlaneInformation(companyName);
+                    waitToContinue();
                     break;
 
                 case 5:
                     cout << endl << endl;
                     printAllPlanes(companyName);
+                    waitToContinue();
                     break;
             }
 
@@ -177,7 +182,7 @@ void planesMenu(Company &companyName) {
 void flightsMenu(Company &companyName) {
 	int choice = 0;
 
-	while (choice != 5) {
+	while (choice != 6) {
 		try {
 			cout << "____________________________________________________" << endl;
 			cout << "|                MANAGE FLIGHTS                    |" << endl;
@@ -187,10 +192,11 @@ void flightsMenu(Company &companyName) {
 			cout << "|     2) Cancel Flight                             |" << endl;
 			cout << "|     3) Postpone Flight                           |" << endl;
 			cout << "|     4) Display all existing flights              |" << endl;
-			cout << "|     5) Go Back to Main Menu                      |" << endl;
+            cout << "|     5) Display flights of an airport              |" << endl;
+			cout << "|     6) Go Back to Main Menu                      |" << endl;
 			cout << "|    Option: ";
 
-			choice = checkBoundaries(1, 5);
+			choice = checkBoundaries(1, 6);
 
 
 
@@ -198,22 +204,32 @@ void flightsMenu(Company &companyName) {
 			case 1:
 				cout << endl;
 				addFlight(companyName);
+                    waitToContinue();
 				break;
 
 			case 2:
 				cout << endl << endl;
 				cancelFlight(companyName);
+                    waitToContinue();
 				break;
 
 			case 3:
 				cout << endl << endl;
 				postponeFlight(companyName);
+                    waitToContinue();
 				break;
 
 			case 4:
 				cout << endl << endl;
 				printAllFlights(companyName);
+                    waitToContinue();
 				break;
+
+                case 5:
+                    cout << endl << endl;
+                    printFlightsAirport(companyName);
+                    waitToContinue();
+                    break;
 			}
 		}
 		catch (OperationCanceled &e) {
@@ -266,26 +282,31 @@ void passengersMenu(Company &companyName) {
                 case 1:
                     cout << endl;
                     addPassenger(companyName);
+                    waitToContinue();
                     break;
 
 				case 2:
 					cout << endl << endl;
 					changePhoneNumber(companyName);
+                    waitToContinue();
 					break;
 
                 case 3:
                     cout << endl << endl;
                     deletePassenger(companyName);
+                    waitToContinue();
                     break;
 
                 case 4:
                     cout << endl << endl;
                     printPassengerReservations(companyName);
+                    waitToContinue();
                     break;
 
 				case 5:
 					cout << endl << endl;
 					printPassengerInformation(companyName);
+                    waitToContinue();
 					break;
 
                 case 6:
@@ -298,6 +319,7 @@ void passengersMenu(Company &companyName) {
                 case 7:
                     cout << endl << endl;
                     printAllPassengers(companyName);
+                    waitToContinue();
                     break;
 
 					
@@ -306,7 +328,6 @@ void passengersMenu(Company &companyName) {
         catch (OperationCanceled &e) {
             cout << "Operation was canceled\n";
         }
-
 	}
 }
 
@@ -334,32 +355,38 @@ void reservationsMenu(Company &companyName) {
                 case 1:
                     cout << endl;
                     addReservationToPass(companyName);
+                    waitToContinue();
                     break;
 
                 case 2:
                     cout << endl << endl;
                     addReservationAndNewPass(companyName);
+                    waitToContinue();
                     break;
 
                 case 3:
                     cout << endl << endl;
                     deleteReservation(companyName);
+                    waitToContinue();
                     break;
 
                 case 4:
                     cout << endl << endl;
                     printPassengerReservations(companyName);
+                    waitToContinue();
                     break;
 
                 case 5:
                     cout << endl << endl;
                     printAllReservations (companyName);
+                    waitToContinue();
                     break;
             }
         }
         catch (OperationCanceled &e) {
             cout << "Operation was canceled\n";
         }
+
 
 	}
 }
@@ -385,21 +412,26 @@ void maintenanceMenu(Company &companyName) {
 			switch (choice) {
                 case 1:
                     cout << endl;
+                    waitToContinue();
                     break;
 
                 case 2:
                     cout << endl;
 					postponeMaintenance(companyName);
+                    waitToContinue();
                     break;
 
                 case 3:
                     cout << endl;
-					companyName.maintenanceList();
+                    companyName.maintenanceList();
+                    waitToContinue();
                     break;
 
                 case 4:
                     cout << endl;
 					printMaintenancesOnDate(companyName);
+                    printMaintenancesOnDate(companyName);
+                    waitToContinue();
                     break;
 				case 5:
 					cout << endl;
@@ -412,8 +444,6 @@ void maintenanceMenu(Company &companyName) {
 		catch (OperationCanceled &e) {
 			cout << "Operation was canceled\n";
 		}
-
-		waitToContinue();
 	}
 }
 
@@ -438,21 +468,25 @@ void technicianMenu (Company &companyName) {
                 case 1:
                     cout << endl;
 					addTechnician(companyName);
+                    waitToContinue();
                     break;
 
                 case 2:
                     cout << endl;
 					deleteTechnician(companyName);
+                    waitToContinue();
                     break;
 
                 case 3:
                     cout << endl;
 					printTechnician(companyName);
+                    waitToContinue();
                     break;
 
                 case 4:
                     cout << endl;
 					companyName.printAllTechnicians();
+                    waitToContinue();
                     break;
 
             }
@@ -461,8 +495,6 @@ void technicianMenu (Company &companyName) {
         catch (OperationCanceled &e) {
             cout << "Operation was canceled\n";
         }
-
-		waitToContinue();
     }
 }
 
@@ -511,8 +543,6 @@ void addPlane(Company &companyName) {
              << *adding;
     } else
         throw OperationCanceled();
-
-    waitToContinue();
 }
 
 void deletePlane(Company &companyName) {
@@ -545,8 +575,6 @@ void deletePlane(Company &companyName) {
 		}
 
 	} while (invalidInput);
-
-    waitToContinue ();
 }
 
 void printFlights(Company &companyName) {
@@ -584,8 +612,6 @@ void printFlights(Company &companyName) {
 		}
 	} while (invalidInput);
 
-
-    waitToContinue ();
 }
 
 void printPlaneInformation(Company &companyName) {
@@ -616,8 +642,6 @@ void printPlaneInformation(Company &companyName) {
 			throw OperationCanceled();
 		}
 	} while (invalidInput);
-
-    waitToContinue ();
 }
 
 void printAllPlanes(Company &companyName) {
@@ -633,8 +657,6 @@ void printAllPlanes(Company &companyName) {
             cout << *pls.at(i) << endl;
         }
     }
-
-    waitToContinue ();
 }
 
 
@@ -750,7 +772,6 @@ void addFlight(Company &companyName) {
 
     }
 
-    waitToContinue ();
 }
 
 void cancelFlight(Company &companyName) {
@@ -806,7 +827,6 @@ void cancelFlight(Company &companyName) {
 
     } while (invalidInput);
 
-    waitToContinue ();
 }
 
 void postponeFlight(Company &companyName) {
@@ -920,7 +940,6 @@ void postponeFlight(Company &companyName) {
 
 	}
 
-    waitToContinue ();
 }
 
 void printAllFlights(Company &companyName) {
@@ -934,11 +953,34 @@ void printAllFlights(Company &companyName) {
 
 		cout << "\nFlights of plane " << printing->getId() << "\n" << fls << endl << endl;
 	}
-
-    waitToContinue ();
-
 }
 
+void printFlightsAirport (Company &companyName) {
+    string idAirport;
+    vector<Flight*> airportFlights;
+
+    cout << "\nType 0 to cancel the operation\n";
+
+    cout << "Choose your airport: \n";
+    cin.ignore();
+
+        getline(cin, idAirport);
+
+        if (idAirport == "0"){
+            throw OperationCanceled();
+        }
+
+        airportFlights = companyName.getAirportsAllFlights(idAirport);
+
+        if (airportFlights.size() != 0){
+
+            cout << airportFlights << endl;
+        }
+        else {
+            cout << "There's no flight from or to that airport. ";
+        }
+
+}
 
 /*             MANAGE PASSENGERS        */
 
@@ -1002,11 +1044,9 @@ void addPassenger(Company &companyName) {
 		<< "Passenger information: \n\n"
 		<< *adding;
 
-	waitToContinue();
 }
 
-void changePhoneNumber(Company & companyName)
-{
+void changePhoneNumber(Company & companyName) {
 	int id, i;
 	bool invalidInput;
 
@@ -1066,13 +1106,10 @@ void changePhoneNumber(Company & companyName)
 			invalidInput = false;
 		}
 	} while (invalidInput);
-
-	waitToContinue();
 	
 }
 
-void deletePassenger(Company &companyName)
-{
+void deletePassenger(Company &companyName) {
 	int id;
 	bool invalidInput;
 
@@ -1107,7 +1144,6 @@ void deletePassenger(Company &companyName)
 		}
 	} while (invalidInput);
 
-	waitToContinue();
 }
 
 void printPassengerReservations(Company &companyName) {
@@ -1150,7 +1186,6 @@ void printPassengerReservations(Company &companyName) {
 
 	} while (invalidInput);
 
-    waitToContinue ();
 }
 
 void printPassengerInformation(Company &companyName) {
@@ -1182,7 +1217,6 @@ void printPassengerInformation(Company &companyName) {
 		}
 	} while (invalidInput);
 
-    waitToContinue ();
 }
 
 void printAllPassengers(Company &companyName) {
@@ -1192,7 +1226,6 @@ void printAllPassengers(Company &companyName) {
 		cout << *pls.at(i) << endl;
 	}
 
-    waitToContinue ();
 }
 
 
@@ -1323,7 +1356,6 @@ void addReservationToPass(Company &companyName) {
 
 	companyName.addToHashTable(pc1);
 
-    waitToContinue ();
 }
 
 void addReservationAndNewPass(Company &companyName) {
@@ -1332,6 +1364,9 @@ void addReservationAndNewPass(Company &companyName) {
 	int nOfFlights = Flight::getLastId();
 	float price;
 	unsigned int idFlight, idAirport;
+
+    cout << "\nType 0 to cancel the operation\n";
+
 	cout << "Name of the passenger: \n";
 
 	name = checkString(name);
@@ -1432,8 +1467,6 @@ void addReservationAndNewPass(Company &companyName) {
 	Date nowRDate(nowR.getYear(), nowR.getMonth(), nowR.getDay());
 
 	pc1->setLastTicketBought(nowRDate);
-
-    waitToContinue ();
 }
 
 void deleteReservation(Company &companyName) {
@@ -1470,7 +1503,6 @@ void deleteReservation(Company &companyName) {
 
 		//TODO: tratar da hash table aqui (nao sei ainda o que fazer aqui...)
 
-    waitToContinue ();
 }
 
 void printAllReservations (Company &companyName) {
@@ -1623,9 +1655,9 @@ void printTechnician (Company &companyName) {
 		}
 	}
 }
+
 /*       MANAGE MAINTENANCE       */
-void printMaintenancesOnDate(Company &companyName)
-{
+void printMaintenancesOnDate(Company &companyName){
 	int days;
 	bool invalDate;
 	string  dateStr;
@@ -1676,8 +1708,7 @@ void printMaintenancesOnDate(Company &companyName)
 	} while (invalDate);
 }
 
-void postponeMaintenance(Company &companyName)
-{
+void postponeMaintenance(Company &companyName) {
 	bool invalDate;
 	string  dateStr;
 	int id;
@@ -1713,7 +1744,7 @@ void postponeMaintenance(Company &companyName)
 			if (Date::past(year, month, day))
 				throw InvalidDate(year, month, day);
 			if (companyName.postponeMaintenance(id, newDate))
-				cout << "Maintenance Postponed with sucess! \n";
+				cout << "Maintenance Postponed with success! \n";
 			else
 				cout << "There isnt a Plane with that Id \n";
 
@@ -1726,8 +1757,7 @@ void postponeMaintenance(Company &companyName)
 	} while (invalDate);
 }
 
-void printMaintenancesNextDays(Company &companyName)
-{
+void printMaintenancesNextDays(Company &companyName) {
 	bool invalDate;
 	string  dateStr;
 	int days;

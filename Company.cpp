@@ -507,6 +507,22 @@ vector<vector<Flight* > > Company::getAirportsFlights() {
 	return airportFlights;
 }
 
+vector<Flight* > Company::getAirportsAllFlights(string airport) {
+    vector<Flight*> airportFlights;
+
+    for (unsigned int i = 0; i < planes.size(); i++)
+    {
+        for (unsigned int j = 0; j<planes[i]->getFlights().size(); j++)
+        {
+            if (planes[i]->getFlights().at(j)->getADep() == airport || planes[i]->getFlights().at(j)->getAArr() == airport) {
+                airportFlights.push_back(planes.at(i)->getFlights().at(j));
+            }
+        }
+    }
+
+    return airportFlights;
+}
+
 void Company::addFlight (Flight *f){
 
     for (int i = 0; i < planes.size(); i++) {
@@ -583,8 +599,8 @@ void Company::maintenanceList(const Date &begin, const Date &end) const {
       
     }
 }
-void Company::maintenanceList(const unsigned int days) const
-{
+
+void Company::maintenanceList(const unsigned int days) const {
 	for (set<Plane*>::const_iterator it = maintenance.begin(); it != maintenance.end(); it++)
 	{
 		if ((*it)->getNextMaintenance() < Date::getNow() + days || (*it)->getNextMaintenance() == Date::getNow() + days)
@@ -594,8 +610,8 @@ void Company::maintenanceList(const unsigned int days) const
 		else return;
 	}
 }
-bool Company::postponeMaintenance(unsigned int nrid, Date newDate)
-{
+
+bool Company::postponeMaintenance(unsigned int nrid, Date newDate){
 	for (set<Plane*>::const_iterator it = maintenance.begin(); it != maintenance.end(); it++)
 	{
 		if ((*it)->getId() == nrid)
@@ -604,6 +620,9 @@ bool Company::postponeMaintenance(unsigned int nrid, Date newDate)
 			Plane* temp = (*it);
 			maintenance.erase(it);
 			maintenance.insert(temp);
+            deleteTechMaintenance(nrid);
+            scheduleMaintenance((*it));
+
 			cout << *temp << endl;
 			return true;
 		}
@@ -766,6 +785,29 @@ Technician Company::searchTechnician(int id) {
     throw NoSuchTechnician (id);
 }
 
+void Company::deleteTechMaintenance(int planeId) {
+    priority_queue <Technician> temporary;
+
+    Technician t = technicians.top();
+
+    while (! technicians.empty()) {
+
+        try {
+            t = technicians.top();
+            technicians.pop();
+            t.deletePlaneToDo(planeId);
+        }
+        catch (NoSuch &p) {
+
+        }
+
+        temporary.push(t);
+    }
+
+    technicians = temporary;
+}
+
+
 void Company::printAllTechnicians() {
     priority_queue <Technician> temporary = technicians;
 
@@ -798,7 +840,7 @@ bool Company::addHT(PassengerWCardPtr p1) {
 	return true;
 }
 
-bool Company::addToHashTable(PassengerWCardPtr p1){
+bool Company::addToHashTable(PassengerWCardPtr p1) {
 	PassengerWCard* tmp = p1.PassengerWCard;
 	DateFlight nowTmp = DateFlight::getNow();
 	Date nowDate(nowTmp.getYear(), nowTmp.getMonth(), nowTmp.getDay());
@@ -815,15 +857,18 @@ bool Company::addToHashTable(PassengerWCardPtr p1){
 	return false;
 }
 
-bool Company::deleteFromHashTable(PassengerWCardPtr p1)
-{
+bool Company::deleteFromHashTable(PassengerWCardPtr p1) {
 	iteratorH it = inactivePassengers.begin();
 
 	while (it != inactivePassengers.end()) {
 
 		PassengerWCardPtr tmpPtr = *it;
 		PassengerWCard* tmp = tmpPtr.PassengerWCard;
-		if (tmp->getId() == p1.getId()) {			inactivePassengers.erase(it);			return true;		}			it++;
+		if (tmp->getId() == p1.getId()) {
+			inactivePassengers.erase(it);
+			return true;
+		}
+			it++;
 	}
 	return false;
 }
