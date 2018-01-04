@@ -199,6 +199,12 @@ public:
 	 */
 	vector <vector <Flight *> > getAirportsFlights ();
 
+    /**
+     * @brief Goes through all the flights of the company and checks if they departure from or arrive to the given airport,
+     * returning a vector with all those flights
+     * @param airport The airport to check which flights departure from or arrive to
+     * @return A vector of pointer to all the flights that either departure from or arrive to the given airport
+     */
     vector <Flight *> getAirportsAllFlights(string airport);
 
     /**
