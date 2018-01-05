@@ -629,8 +629,8 @@ bool Company::postponeMaintenance(unsigned int nrid, Date newDate){
 	}
 	return false;
 }
-bool Company::cancelMaintenance(unsigned int nrid)
-{
+
+bool Company::cancelMaintenance(unsigned int nrid){
 	for (set<Plane*>::const_iterator it = maintenance.begin(); it != maintenance.end(); it++)
 	{
 		if ((*it)->getId() == nrid)
@@ -779,7 +779,10 @@ Technician Company::deleteTechnician(int id) {
         }
     }
 
-    technicians = temporary;
+    while (! temporary.empty()) {
+        technicians.push (temporary.top());
+        temporary.pop();
+    }
 
     if (found)
         return t;
@@ -788,7 +791,19 @@ Technician Company::deleteTechnician(int id) {
 }
 
 Technician Company::searchTechnician(int id) {
-    priority_queue <Technician> temporary = technicians;
+    priority_queue <Technician> temporary, temporary2;
+
+    while(!technicians.empty()) {
+        temporary.push(technicians.top());
+        temporary2.push(technicians.top());
+        technicians.pop();
+    }
+
+    while (!temporary2.empty()) {
+        technicians.push(temporary2.top());
+    }
+
+
 
     while (! temporary.empty()) {
 
@@ -820,15 +835,24 @@ void Company::deleteTechMaintenance(int planeId) {
         temporary.push(t);
     }
 
-    technicians = temporary;
+    while (! temporary.empty()) {
+        technicians.push (temporary.top());
+        temporary.pop();
+    }
+
 }
 
 
 void Company::printAllTechnicians() {
-    priority_queue <Technician> temporary = technicians;
+    priority_queue <Technician> temporary;
+    while (!technicians.empty()) {
+        cout << technicians.top() << endl << endl;
+        temporary.push (technicians.top());
+        technicians.pop();
+    }
 
     while (! temporary.empty()) {
-        cout << temporary.top() << endl << endl;
+        technicians.push (temporary.top());
         temporary.pop();
     }
 }

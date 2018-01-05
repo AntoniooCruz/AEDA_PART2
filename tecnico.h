@@ -12,6 +12,10 @@ using namespace std;
 
 class Company;
 
+/**
+ * @class Technician
+ * @brief
+ */
 class Technician {
 private:
 	unsigned int id;			                    /** < @brief Id of the passenger in the company */
