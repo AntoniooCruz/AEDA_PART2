@@ -1364,7 +1364,10 @@ void addReservationToPass(Company &companyName) {
 
 	pc1->setLastTicketBought(nowRDate);
 
-	companyName.addToHashTable(pc1);
+	PassengerWCardPtr tmpPtr;
+	tmpPtr.PassengerWCard = pc1;
+
+	companyName.deleteFromHashTable(tmpPtr);
 
 }
 
