@@ -17,7 +17,10 @@ using namespace std;
 class Reservation;
 
 /*
- * @class Passenger Abstraction of a passenger
+ * @class Passenger
+ * @brief Abstraction of a passenger that allows to save non registered passengers.
+ * It saves the name, anniversary and the reservations made by a passenger.
+ * It allows to get the price, the date of birth, to add and delete a reservation from a passenger.
  */
 
 class Passenger
@@ -104,7 +107,8 @@ struct flightsYear {
 
 };
 /**
-* @class PassengerWCard Subclass of Passenger, this objects are registred to the company and have Id's job's and avergare flights per year
+* @class PassengerWCard
+* @brief Subclass of Passenger, this objects are registered to the company and have Id's job's and average flights per year
 * @inherit class Passenger
 */
 class PassengerWCard : public Passenger
@@ -112,8 +116,8 @@ class PassengerWCard : public Passenger
 private:
 	unsigned int id;								/** < @brief Id of the passenger in the company */
 	string phoneNumber;								/** < @brief phone number of the passenger in the company */
-	vector <flightsYear> averageFlights;			
-	float flightYear;								/** < @brief Average flights per year */
+	vector <flightsYear> averageFlights;			/** < @brief Vector that keeps the year and the number of flights that year
+                                                      * we can calculate the average fights per year*/
 	string job;										/** < @brief Job of the passenger */
 	Date lastTicketBought;							/** < @brief The date of the last ticket bought*/
 

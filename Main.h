@@ -230,6 +230,12 @@ void deleteReservation(Company &companyName);
 void printAllReservations (Company &companyName);
 
 /**
+ * @brief Does a maintenance, meaning deletes the current one and replaces it for the next one of the plane
+ * @param companyName The company to which the plane belongs
+ */
+void doMaintenance (Company &companyName);
+
+/**
  * @brief Prints all of the scheduled maintenance between 2 dates given by the user
  * @param companyName The company to which the maintenance belong to
  */

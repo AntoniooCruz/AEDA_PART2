@@ -121,10 +121,16 @@ public:
     /**
      * @brief Opens the reservation file with the information regarding the reservations
      * Uses the member value reservFile as the name of the file
+     * @throw ErrorOpeningFile If there's an error opening the file
      */
     void openReservFile ();
 
 
+    /**
+     * @brief Opens the technicians file with the information regarding all the technicians of the company
+     * Uses the member techFile as the name of the file
+     * @throw ErrorOpeningFile If there's an error opening the file
+     */
     void openTechFile();
 
     /**
@@ -150,14 +156,18 @@ public:
 	 */
     void closeReservFile();
 
+    /**
+	 * @brief Writes all the data regarding the technicians
+	 * Uses the member value techFile as the name of the file.
+     */
     void closeTechFile();
 
     /**
-    	 * @brief Reads a complex string meaning a string with several nouns separated by spaces. Used when reading strings from the files.
-    	 * @param &s the stringstream where the string should be imported from
-    	 * @param separate the character that indicates the end of the string
-    	 * @return The string read
-    	 */
+    * @brief Reads a complex string meaning a string with several nouns separated by spaces. Used when reading strings from the files.
+    * @param &s the stringstream where the string should be imported from
+    * @param separate the character that indicates the end of the string
+    * @return The string read
+    */
     static string readComplexString (istringstream &s, char separate);
 
     /* Edit planes' vector */
@@ -173,13 +183,20 @@ public:
 	* @brief Prints on the screen the Planes sorted by the date of the next maintenance if their dates are between the 2 given
 	* @param begin The starting date
 	* @param begin The ending date
+	* @return true if a maintenance was printed, false otherwise
 	*/
-	void maintenanceList(const Date &begin, const Date &end) const;
+	bool maintenanceList(const Date &begin, const Date &end) const;
 	/**
 	* @brief Prints all of the scheduled maintenance between now and the days given by the user
 	* @param begin How many days
 	*/
 	void maintenanceList(const unsigned int days) const;
+	/**
+	* @brief Changes the date of the next maintenance to the next obligatory one (Now + required rate)
+	* @param nrid The id of the plane 
+	* @return True on sucess False if no plane has that id
+	*/
+	bool doMaintenance(unsigned int nrid);
 
     /**
      * @brief Adds a plane to the company. Calculates the id it should have and sets the plane id.
@@ -352,7 +369,10 @@ public:
      */
     void printAllTechnicians ();
 
-
+    /**
+     * @brief Deletes a plane from the thechnician's vector planesToDo
+     * @param planeId The id of the plane whose maintenance is being deleted (canceled/postopones)
+     */
     void deleteTechMaintenance(int planeId);
 
 };

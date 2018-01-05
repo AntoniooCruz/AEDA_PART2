@@ -40,6 +40,13 @@ public:
 	 */
     Plane (unsigned int nrPlaces);
 
+	/**
+	 * @brief Constructor to create a plane given its model
+	 * @param nrPlaces The number of places of the plane to be created
+	 * @param model The model of the plane to be created
+	 * @param maintenanceRate The rate to which the maintenance will occur to this plane, in days
+	 * @param nextMaintenance The date when the next maintenance will occur
+	 */
 	Plane(unsigned int nrPlaces, string model, int maintenanceRate, Date nextMaintenance);
 
 	/**
@@ -99,6 +106,10 @@ public:
 	 */
 	void setId (unsigned int id);
 
+	/**
+	 * @brief Changes the date of the next maintenance of the plane
+	 * @param newDate The new date of the next maintenance
+	 */
 	void changeMaintenance(Date newDate);
 
     /* others */
@@ -133,7 +144,12 @@ public:
 	 */
     Flight * searchFlight (unsigned int nrid, int &i);
 
-
+	/**
+	 * @brief Postpones the arrival time of a flight that belongs to this plane by increasing its duration
+	 * @param f The flight to be postponed
+	 * @param duration The new duration of the flight
+	 * @return A pointer to the flight that was just postponed
+	 */
     Flight * postponeFlight (Flight * f, unsigned int duration);
 
 	/**
@@ -160,10 +176,6 @@ public:
 	 * @return A vector of pointers to flights that will be erased
 	 */
 	vector <Flight *> clearPastFlights ();
-
-	void rescheduleMaintenance(Date &d1);
-
-	int doMaintenance();
 
     /* operator overloading */
 	/**
