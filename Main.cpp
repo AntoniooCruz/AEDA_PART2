@@ -1460,7 +1460,7 @@ void addReservationAndNewPass(Company &companyName) {
             throw OperationCanceled ();
 
 		if (!fc1->seatAvailable(seat))
-			cout << "This is not an avaiable seat, please try again!\n";
+			cout << "This is not an available seat, please try again!\n";
 	} while (!fc1->seatAvailable(seat));
 	price = companyName.searchFlight(idFlight)->getPrice();
 	Reservation * adding = new Reservation(f1, p1, price, seat);
@@ -1472,11 +1472,6 @@ void addReservationAndNewPass(Company &companyName) {
 
 	fc1->addReservation(adding);
 
-	DateFlight nowR = DateFlight::getNow();
-
-	Date nowRDate(nowR.getYear(), nowR.getMonth(), nowR.getDay());
-
-	pc1->setLastTicketBought(nowRDate);
 }
 
 void deleteReservation(Company &companyName) {

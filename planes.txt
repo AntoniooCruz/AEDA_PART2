@@ -1,6 +1,6 @@
-1 ; 54 , BUS , 7 , 39 ; 1 , Francisco Sa Carneiro , Cristiano Ronaldo , 2018/02/05 - 13:00 , 60 , 40.824 , C ; 2 , Francisco Sa Carneiro , Humberto Delgado , 2018/02/08 - 17:30 , 50 , 25 , C ; 3 , Cristiano Ronaldo , Humberto Delgado , 2018/02/08 - 01:40 , 90 , 46 , C
-2 ; 36 , A320 , 3 , 2
-3 ; 60 , BUS , 10 , 2
-4 ; 60 , A321 , 12 , 3
-5 ; 6 , A320 , 12 , 1
-6 ; 60 , BUS , 7 , 4
+1 ; 54 , BUS , 7 , 39 ; 1 , Francisco Sa Carneiro , Cristiano Ronaldo , 2018/02/05 - 13:00 , 60 , 40.824 , C ; 7 , Paris-Orly , Barajas , 2018/04/05 - 13:00 , 80 , 45 , C
+2 ; 36 , A320 , 3 , 2 ; 2 , Francisco Sa Carneiro , Humberto Delgado , 2018/02/08 - 17:30 , 50 , 25 , C ; 8 , Paris-Orly , Cristiano Ronaldo , 2018/04/05 - 13:30 , 120 , 1500 , P
+3 ; 60 , BUS , 10 , 0 ; 3 , Cristiano Ronaldo , Humberto Delgado , 2018/02/10 - 01:40 , 90 , 46 , C
+4 ; 60 , A321 , 12 , 3 ; 4 , Barajas , Francisco Sa Carneiro , 2018/02/10 - 01:50 , 30 , 1005 , P
+5 ; 66 , A320 , 12 , 0 ; 5 , Heathrow , Barajas , 2019/03/16 - 17:00 , 40 , 30 , C
+6 ; 60 , BUS , 7 , 4 ; 6 , Heathrow , Humberto Delgado , 2018/03/20 - 15:00 , 50 , 20 , C
