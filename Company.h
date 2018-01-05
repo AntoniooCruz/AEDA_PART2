@@ -283,32 +283,36 @@ public:
     Flight * searchFlight (unsigned int FlightId);
 
 	/**
-	* @brief update hash table with new information
+	* @brief Update hash table
 	*/
 	void updateHashTable();
 
 	/**
-	* @brief update hash table with new information
-	* @return false if already exist ... if false -> delete and add with the new info
+	* @brief add to InactivePassengers a new passenger
+	* @param p1 The passenger to be added to the InactivePassengers
+	* @return false if already exist ... (if false -> delete and add with the new info)
 	*/
 	bool addHT(PassengerWCardPtr p1);
 
 	/**
-	* @brief add to hash table, check the date
-	* @return false if already exist ... if false -> delete and add with the new info 
+	* @brief check the date and add a passenger to InactivePassengers 
+	* @param p1 The passenger (struct PassengerWCardPtr) to be added to InactivePassengers
 	*/
 	bool addToHashTable(PassengerWCardPtr p1);
-	/**
-	* @brief delete from hash table
-	* @return false if wasnt deleted
-	*/
-	bool deleteFromHashTable(PassengerWCardPtr p1);
 
 	/**
-	* @brief add to hash table, check the date
+	* @brief check the date and add a passenger to InactivePassengers 
+	* @param p1 The passenger to be added to the InactivePassengers
 	* @return false if already exist ... if false -> delete and add with the new info
 	*/
 	bool addToHashTable(PassengerWCard* p1);
+
+	/**
+	* @brief Remove from InactivePassengers
+	* @param p1 The passenger to remove from the InactivePassengers
+	* @return False if wasnt deleted
+	*/
+	bool deleteFromHashTable(PassengerWCardPtr p1);
 
 	/**
 	* @return inactivePassengers
