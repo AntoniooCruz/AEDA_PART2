@@ -639,6 +639,8 @@ bool Company::cancelMaintenance(unsigned int nrid){
 			Plane* temp = (*it);
 			maintenance.erase(it);
 			maintenance.insert(temp);
+            deleteTechMaintenance(nrid);
+            scheduleMaintenance(temp);
 			cout << *temp << endl;
 			return true;
 		}

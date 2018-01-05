@@ -1657,8 +1657,7 @@ void printTechnician (Company &companyName) {
 }
 
 /*       MANAGE MAINTENANCE       */
-void cancelMaintenance(Company &companyName)
-{
+void cancelMaintenance(Company &companyName){
 	int id;
 
 	cout << "\nType 0 to cancel the operation\n";
@@ -1675,6 +1674,7 @@ void cancelMaintenance(Company &companyName)
 		cout << "There isnt a Plane with that Id \n";
 
 }
+
 void printMaintenancesOnDate(Company &companyName){
 	int days;
 	bool invalDate;
@@ -1715,6 +1715,14 @@ void printMaintenancesOnDate(Company &companyName){
 			if (Date::past(year, month, day))
 				throw InvalidDate(day, month, year);
 			Date end = Date(year, month, day);
+
+            if(end < start) {
+                Date temp;
+                temp = start;
+                start = end;
+                end = temp;
+            }
+
 			companyName.maintenanceList(start, end);
 
 		}
