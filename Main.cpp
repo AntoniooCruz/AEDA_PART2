@@ -1715,14 +1715,13 @@ void printMaintenancesOnDate(Company &companyName){
 			if (Date::past(year, month, day))
 				throw InvalidDate(day, month, year);
 			Date end = Date(year, month, day);
-
-            if(end < start) {
-                Date temp;
-                temp = start;
-                start = end;
-                end = temp;
-            }
-
+			if (end < start)
+			{
+				Date temp;
+				temp = start;
+				start = end;
+				end = temp;
+			}
 			companyName.maintenanceList(start, end);
 
 		}

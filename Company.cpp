@@ -648,6 +648,22 @@ bool Company::cancelMaintenance(unsigned int nrid){
 	return false;
 }
 
+bool Company::doMaintenance(unsigned int nrid)
+{
+	for (set<Plane*>::const_iterator it = maintenance.begin(); it != maintenance.end(); it++)
+	{
+		if ((*it)->getId() == nrid)
+		{
+			(*it)->changeMaintenance(Date::getNow() + (*it)->getMaintenanceRate());
+			Plane* temp = (*it);
+			maintenance.erase(it);
+			maintenance.insert(temp);
+			return true;
+		}
+	}
+	return false;
+}
+
 
 /*  EDIT PASSENGER */
 

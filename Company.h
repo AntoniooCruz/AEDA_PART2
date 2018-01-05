@@ -190,6 +190,12 @@ public:
 	* @param begin How many days
 	*/
 	void maintenanceList(const unsigned int days) const;
+	/**
+	* @brief Changes the date of the next maintenance to the next obligatory one (Now + required rate)
+	* @param nrid The id of the plane 
+	* @return True on sucess False if no plane has that id
+	*/
+	bool doMaintenance(unsigned int nrid);
 
     /**
      * @brief Adds a plane to the company. Calculates the id it should have and sets the plane id.
