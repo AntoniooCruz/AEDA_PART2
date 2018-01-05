@@ -121,10 +121,16 @@ public:
     /**
      * @brief Opens the reservation file with the information regarding the reservations
      * Uses the member value reservFile as the name of the file
+     * @throw ErrorOpeningFile If there's an error opening the file
      */
     void openReservFile ();
 
 
+    /**
+     * @brief Opens the technicians file with the information regarding all the technicians of the company
+     * Uses the member techFile as the name of the file
+     * @throw ErrorOpeningFile If there's an error opening the file
+     */
     void openTechFile();
 
     /**
@@ -150,14 +156,18 @@ public:
 	 */
     void closeReservFile();
 
+    /**
+	 * @brief Writes all the data regarding the technicians
+	 * Uses the member value techFile as the name of the file.
+     */
     void closeTechFile();
 
     /**
-    	 * @brief Reads a complex string meaning a string with several nouns separated by spaces. Used when reading strings from the files.
-    	 * @param &s the stringstream where the string should be imported from
-    	 * @param separate the character that indicates the end of the string
-    	 * @return The string read
-    	 */
+    * @brief Reads a complex string meaning a string with several nouns separated by spaces. Used when reading strings from the files.
+    * @param &s the stringstream where the string should be imported from
+    * @param separate the character that indicates the end of the string
+    * @return The string read
+    */
     static string readComplexString (istringstream &s, char separate);
 
     /* Edit planes' vector */
@@ -347,7 +357,10 @@ public:
      */
     void printAllTechnicians ();
 
-
+    /**
+     * @brief Deletes a plane from the thechnician's vector planesToDo
+     * @param planeId The id of the plane whose maintenance is being deleted (canceled/postopones)
+     */
     void deleteTechMaintenance(int planeId);
 
 };

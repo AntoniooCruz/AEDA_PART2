@@ -66,11 +66,15 @@ public:
     bool hasModel (string plane_model) const;
 
     /**
-	* @brief add 
+	* @brief adds a plane to the vector PlanesToDo of the technician
+    * @param p The plane to be added to the vector
 	*/
 	void addPlanesToDo(Plane * p);
 
-
+	/**
+	 * @brief Deletes a plane from the technician's vector PlanesToDo
+	 * @param planeId The id of the plane to be deleted
+	 */
 	void deletePlaneToDo (int planeId);
 
     /**
