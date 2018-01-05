@@ -394,46 +394,52 @@ void reservationsMenu(Company &companyName) {
 void maintenanceMenu(Company &companyName) {
 	int choice = 0;
 
-	while (choice != 6) {
+	while (choice != 7) {
 		try {
             cout << "____________________________________________________" << endl;
             cout << "|                   MANAGE MAINTENANCE             |" << endl;
             cout << "|                                                  |" << endl;
             cout << "|        Type your option:                         |" << endl;
-            cout << "|     1) Cancel maintenance                        |" << endl;
-            cout << "|     2) Postpone maintenance                      |" << endl;
-            cout << "|     3) List maintenances to do                   |" << endl;
-            cout << "|     4) List maintenances to do between 2 dates   |" << endl;
-			cout << "|     5) List maintenances in the next days        |" << endl;
-            cout << "|     6) Go Back to Main Menu                      |" << endl;
+            cout << "|     1) Do maintenance                            |" << endl;
+            cout << "|     2) Cancel maintenance                        |" << endl;
+            cout << "|     3) Postpone maintenance                      |" << endl;
+            cout << "|     4) List maintenances to do                   |" << endl;
+            cout << "|     5) List maintenances to do between 2 dates   |" << endl;
+			cout << "|     6) List maintenances in the next days        |" << endl;
+            cout << "|     7) Go Back to Main Menu                      |" << endl;
             cout << "|    Option: ";
-            choice = checkBoundaries(1, 6);
+            choice = checkBoundaries(1, 7);
 
 			switch (choice) {
                 case 1:
                     cout << endl;
-					cancelMaintenance(companyName);
                     waitToContinue();
                     break;
 
                 case 2:
                     cout << endl;
-					postponeMaintenance(companyName);
+					cancelMaintenance(companyName);
                     waitToContinue();
                     break;
 
                 case 3:
                     cout << endl;
-                    companyName.maintenanceList();
+					postponeMaintenance(companyName);
                     waitToContinue();
                     break;
 
                 case 4:
                     cout << endl;
+                    companyName.maintenanceList();
+                    waitToContinue();
+                    break;
+
+                case 5:
+                    cout << endl;
 					printMaintenancesOnDate(companyName);
                     waitToContinue();
                     break;
-				case 5:
+				case 6:
 					cout << endl;
 					printMaintenancesNextDays(companyName);
 					break;
@@ -982,6 +988,8 @@ void printFlightsAirport (Company &companyName) {
 
 }
 
+
+
 /*             MANAGE PASSENGERS        */
 
 void addPassenger(Company &companyName) {
@@ -1227,6 +1235,7 @@ void printAllPassengers(Company &companyName) {
 	}
 
 }
+
 
 
 /*			MANAGE RESERVATIONS			*/
@@ -1657,21 +1666,45 @@ void printTechnician (Company &companyName) {
 }
 
 /*       MANAGE MAINTENANCE       */
+void doMaintenance (Company &companyName) {
+    int planeId;
+    bool invalid = true;
+
+    cout << "\nType 0 to cancel the operation\n";
+
+    cout << "Today's maintenance:\n\n";
+
+    companyName.maintenanceList(Date::getNow(), Date::getNow());
+
+    cout << "Id of the plane: ";
+    planeId = checkBoundaries(0);
+
+    if (companyName.doMaintenance(planeId)) {
+
+    }
+}
+
 void cancelMaintenance(Company &companyName){
 	int id;
 
 	cout << "\nType 0 to cancel the operation\n";
-	cout << "Id: ";
+	cout << "Id of the plane: ";
+    id = checkBoundaries(0);
 
-	id = checkBoundaries(0);
+    if (id == 0)
+        throw OperationCanceled();
 
-	if (id == 0)
-		throw OperationCanceled();
 
-	if (companyName.cancelMaintenance(id))
-		cout << "Maintenance Canceled with sucess! \n";
-	else
-		cout << "There isnt a Plane with that Id \n";
+	while (! companyName.cancelMaintenance(id)) {
+        cout << "There isnt a Plane with that Id, try agian:\n";
+        
+        id = checkBoundaries(0);
+
+        if (id == 0)
+            throw OperationCanceled();
+
+    }
+    cout << "Maintenance Canceled with sucess! \n";
 
 }
 
@@ -1685,7 +1718,7 @@ void printMaintenancesOnDate(Company &companyName){
 	do {
 		invalDate = false;
 
-		cout << "List maintenances to do from (Insert date year/month/day): ";
+		cout << "List maintenance to do from (Insert date year/month/day): ";
 		getline(cin, dateStr);
 
 		if (dateStr == "0")
@@ -1740,7 +1773,7 @@ void postponeMaintenance(Company &companyName) {
 	bool notfound = true;
 
 	cout << "\nType 0 to cancel the operation\n";
-	cout << "Id: ";
+	cout << "Id of the plane: ";
 	
 	id = checkBoundaries(0);
 
