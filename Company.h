@@ -290,20 +290,21 @@ public:
 	/**
 	* @brief add to InactivePassengers a new passenger
 	* @param p1 The passenger to be added to the InactivePassengers
-	* @return false if already exist ... (if false -> delete and add with the new info)
+	* @return false if that passenger already was on InactivePassengers (delete and add with the new info), otherwise returns true
 	*/
 	bool addHT(PassengerWCardPtr p1);
 
 	/**
 	* @brief check the date and add a passenger to InactivePassengers 
 	* @param p1 The passenger (struct PassengerWCardPtr) to be added to InactivePassengers
+	* @return false if that passenger already was on InactivePassengers (delete and add with the new info), otherwise returns true
 	*/
 	bool addToHashTable(PassengerWCardPtr p1);
 
 	/**
 	* @brief check the date and add a passenger to InactivePassengers 
 	* @param p1 The passenger to be added to the InactivePassengers
-	* @return false if already exist ... if false -> delete and add with the new info
+	* @return false if that passenger already was on InactivePassengers (delete and add with the new info), otherwise returns true
 	*/
 	bool addToHashTable(PassengerWCard* p1);
 
