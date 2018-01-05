@@ -183,8 +183,9 @@ public:
 	* @brief Prints on the screen the Planes sorted by the date of the next maintenance if their dates are between the 2 given
 	* @param begin The starting date
 	* @param begin The ending date
+	* @return true if a maintenance was printed, false otherwise
 	*/
-	void maintenanceList(const Date &begin, const Date &end) const;
+	bool maintenanceList(const Date &begin, const Date &end) const;
 	/**
 	* @brief Prints all of the scheduled maintenance between now and the days given by the user
 	* @param begin How many days

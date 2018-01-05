@@ -413,6 +413,7 @@ void maintenanceMenu(Company &companyName) {
 			switch (choice) {
                 case 1:
                     cout << endl;
+                    doMaintenance (companyName);
                     waitToContinue();
                     break;
 
@@ -1667,21 +1668,37 @@ void printTechnician (Company &companyName) {
 
 /*       MANAGE MAINTENANCE       */
 void doMaintenance (Company &companyName) {
-    int planeId;
-    bool invalid = true;
+    int planeId, aux;
+    bool thereAre = true;
 
     cout << "\nType 0 to cancel the operation\n";
 
     cout << "Today's maintenance:\n\n";
 
-    companyName.maintenanceList(Date::getNow(), Date::getNow());
+    thereAre = companyName.maintenanceList(Date::getNow(), Date::getNow());
+
+	if (!thereAre) {
+		cout << "There's no maintenance schedule for today.\n";
+	}
 
     cout << "Id of the plane: ";
     planeId = checkBoundaries(0);
 
-    if (companyName.doMaintenance(planeId)) {
+	if (planeId == 0)
+		throw OperationCanceled();
 
+    while (!companyName.doMaintenance(planeId)) {
+		cout << "There isnt a Plane with that Id, try again:\n";
+
+		planeId = checkBoundaries(0);
+
+		if (planeId == 0)
+			throw OperationCanceled();
     }
+
+	companyName.deleteTechMaintenance(planeId);
+	companyName.scheduleMaintenance(companyName.searchPlane(planeId, aux));
+	cout << "Maintenance done with success\n";
 }
 
 void cancelMaintenance(Company &companyName){
@@ -1801,6 +1818,7 @@ void postponeMaintenance(Company &companyName) {
 
 			if (Date::past(year, month, day))
 				throw InvalidDate(year, month, day);
+
 			if (companyName.postponeMaintenance(id, newDate))
 				cout << "Maintenance Postponed with success! \n";
 			else

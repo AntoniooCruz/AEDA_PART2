@@ -582,22 +582,27 @@ void Company::maintenanceList() const {
     }
 }
 
-void Company::maintenanceList(const Date &begin, const Date &end) const {
+bool Company::maintenanceList(const Date &begin, const Date &end) const {
     unsigned int i = 1;
+    bool thereAre = false;
     for (set<Plane*>::const_iterator it = maintenance.begin(); it != maintenance.end(); it++) {
 
         if (begin < (*it)->getNextMaintenance() && (*it)->getNextMaintenance() < end) {
             cout << i << ":" << endl;
             cout << *(*it) << endl;
             i++;
+            thereAre = true;
         }
         else if (begin == (*it)->getNextMaintenance() || end == (*it)->getNextMaintenance()){
             cout << i << ":" << endl;
             cout << *(*it) << endl;
             i++;
+            thereAre = true;
         }
       
     }
+
+    return thereAre;
 }
 
 void Company::maintenanceList(const unsigned int days) const {
